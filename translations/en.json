@@ -1,0 +1,8 @@
+{
+  "app": {
+    "name": "Export Pro",
+    "short_description": "Export zendesk in any format",
+    "long_description": "Export Pro is dedicated to providing innovative solutions that streamline your workflow and enhance productivity. Our integration offers a seamless experience, allowing you to export data effortlessly and manage your information efficiently.\n\n\n### 7-Day Trial Features: \n\n* Export tickets, organizations, comments, users, custom fields, and attachments with ease using our comprehensive export feature. \n* Select and export hundreds of custom fields tailored to your specific needs. \n* Choose from a variety of predefined export formats such as CSV, XML, and JSON. \n* Craft your own export formats. \n* Save and load export configurations for quick re-use, ensuring efficiency and convenience in your data management processes.",
+    "installation_instructions": "### Zendesk Support Export Pro Instructions \n\n\n 1. Install the app \n\n 2. Open Export Pro in the menu on the left \n\n 3. Create an ad hoc export or save one for later use \n\n\n### All paid plans come with a 7 day free trial!"
+  }
+}

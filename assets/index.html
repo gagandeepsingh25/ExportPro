@@ -1,0 +1,2347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zendesk</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+            integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <script src="https://kit.fontawesome.com/c48811e164.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha512-uETKo8ud4U5qF6Ye54vBCflMUxMg6+IGbjeDTl/ztsD98E6ttsJy+in+8+Eg6STQFOPyzxJWXYVJ7Wd/vTqk8Q=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+
+    <style>
+        #fixed-bottom{
+            bottom: 0;
+                left: 0;
+                position: fixed;
+        }
+        .form-select {
+            border-color: black;
+        }
+
+        .clstablerow {
+            padding-top: 50px;
+        }
+
+        .clsbtnrow {
+            padding-top: 20px;
+            padding-bottom: 4px;
+        }
+
+        .btnbottom {
+            float: right;
+            position: absolute;
+            right: 117px;
+        }
+
+        .btn {
+            color: black;
+        }
+
+        .btntab {
+            width: 97%;
+        }
+
+        .btnticket,
+        .btnticket:hover {
+            color: white;
+            background-color: #E164CB;
+
+        }
+
+        .btnComment,
+        .btnComment:hover {
+            background-color: #FFCDCD;
+        }
+
+        .btnUser,
+        .btnUser:hover {
+            background-color: #C5FFE3;
+        }
+
+        .btnOrg,
+        btnOrg:hover {
+            background-color: #C9F5FF;
+        }
+
+        .btnAttach,
+        .btnAttach:hover {
+            background-color: #FFA9B7;
+        }
+
+        .btnTalk,
+        .btnTalk:hover {
+            background-color: #D0DBFF;
+
+        }
+
+        .imgsettings {
+            width: 30%;
+        }
+
+        @media only screen and (max-width: 600px) {
+
+            .btndiv,
+            .selectdiv {
+                padding-top: 10px;
+            }
+
+            .imgsettings {
+                width: 10%;
+            }
+
+        }
+
+        @media only screen and (min-width: 1200px) {
+            .btnbottom {
+                bottom: -28px;
+            }
+        }
+
+        .fa-trash {
+            color: red;
+        }
+
+
+        .multiselect {
+            width: 200px;
+        }
+
+        .selectBox {
+            position: relative;
+        }
+
+        .selectBox select {
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        #checkboxes {
+            display: none;
+            border: 1px #dadada solid;
+        }
+
+        #checkboxes label {
+            display: block;
+        }
+
+        #checkboxes label:hover {
+            background-color: #1e90ff;
+        }
+
+        .btn-cancel {
+            background-color: #D9D9D9;
+            color: white;
+        }
+
+        .btn-save {
+            background-color: #108B50;
+            color: white;
+        }
+
+        .btn-export {
+            background-color: #0A84DD;
+            color: white;
+        }
+
+        table {
+            border-collapse: collapse;
+            border: none;
+            overflow-x: scroll;
+        }
+
+        .clstablerow {
+            overflow-x: scroll;
+            max-height: 450px;
+        }
+
+        tr {
+            border-top: 1px solid black;
+        }
+
+        tr:first-child {
+            border-top: none;
+        }
+
+        td,
+        th {
+            border: none !important;
+        }
+
+        .clsruler {
+            position: absolute;
+            bottom: 0px;
+            width: 85%;
+            bottom: auto;
+        }
+
+        @media only screen and (width: 1920px) {
+            .clsruler {
+                width: 76%;
+            }
+        }
+
+        .card {
+            height: 200px;
+            padding-top: 20px;
+            background-color: #D9D9D9;
+        }
+
+        .clscard {
+            padding-top: 20px;
+        }
+
+        .card-title {
+            margin-top: 117px;
+            text-align: center;
+        }
+
+        #enterprisePlan {
+            border-radius: 0px;
+            border: 2px solid rgb(41, 149, 168);
+            margin-inline: 2px;
+            background-color: white;
+        }
+        img.settings_profile {
+            height: 80px;
+        }
+    </style>
+
+    <style>
+        .activation,
+        .clscontinueActivation {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(180deg, #E77E8F 34%, #E164CB 100%);
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .centered-text {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .vertical-line {
+            border-left: 2px solid #ffffff;
+            position: absolute;
+            top: 150px;
+            /* Adjusted to ensure it starts below the title */
+            bottom: 0;
+            left: calc(50% - 1px);
+            height: calc(100vh - 150px);
+            /* Adjusted height to extend to the bottom of the viewport */
+        }
+
+        .left-side {
+            float: left;
+            width: calc(50% - 1px);
+            box-sizing: border-box;
+            padding-right: 20px;
+            position: relative;
+            /* Added relative positioning */
+        }
+
+        .right-side {
+            float: right;
+            width: 50%;
+            box-sizing: border-box;
+            padding-left: 20px;
+        }
+
+        .text-content {
+            padding-right: 20px;
+            margin-top: 70px;
+            /* Adjusted to create space for the text above the vertical line */
+        }
+
+        .btn-primary {
+            background-color: #00186D;
+            border-color: #00186D;
+            color: white;
+            /* Set text color to white */
+            display: block;
+            /* Change display to block */
+            margin: 20px auto 0;
+            /* Center the button horizontally */
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #002a97;
+            /* Change background color on hover */
+        }
+
+        .bold-text {
+            font-weight: bold;
+        }
+
+        .profile-image {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-image img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container-fluid {
+                padding: 20px;
+            }
+
+            .vertical-line {
+                display: none;
+            }
+
+            .left-side,
+            .right-side {
+                float: none;
+                width: 100%;
+                padding: 0;
+            }
+
+            .text-content,
+            .form-content {
+                padding: 0;
+                margin-top: 20px;
+            }
+
+            .profile-image img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        .form-content {
+            padding-left: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .form-row input {
+            flex: 1;
+            margin-left: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .container-fluid {
+            padding: 50px;
+            position: relative;
+            /* Added relative positioning */
+        }
+
+        /* Activation */
+        .activation {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            /* Adjusted height to cover the viewport */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+
+        .activation-btn {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            /* Font size */
+            line-height: 24px;
+            /* Line height */
+            color: #FFFFFF;
+            padding: 8px 20px;
+            /* Padding */
+            border: none;
+            background: #00186D;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .activation-btn:hover {
+            background-color: rgba(0, 24, 109, 0.8);
+        }
+
+
+        .activate-text {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 800;
+            font-size: 24px;
+            /* Font size */
+            line-height: 28px;
+            /* Line height */
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            /* Adjusted margin */
+        }
+
+        .image-1 {
+            width: 40%;
+            height: auto;
+            position: absolute;
+            top: 23%;
+            left: 15%;
+        }
+
+        .image-2 {
+            width: 40%;
+            height: auto;
+            position: absolute;
+            top: 53%;
+            left: 63%;
+            transform: translate(-50%, -50%);
+
+        }
+
+        .container-1 {
+            max-width: 500px;
+            padding-bottom: 100px;
+            /* Adjusted padding to create space for text and button */
+        }
+
+        .text-center {
+            position: absolute;
+            bottom: 60px;
+            /* Adjusted from bottom */
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 80%;
+        }
+        .sub-text-center{
+            height: 95%;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 80%;
+            text-align: center !important;
+        }
+
+        .circle-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            margin-bottom: 15px;
+            /* setting icons */
+        }
+
+        .circle-icon_1 {
+            width: 80px;
+            height: 68px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            /* subscription icons */
+        }
+
+    #loader-outer{
+        height: 100%;
+        display: none;
+        z-index: 9999999;
+        position: fixed;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+    #loader-overlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #616161;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    #loading-message {
+      font-size: 20px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .spinner-border{
+        width: 4rem;
+        height: 4rem;
+        border-width:0.30em;
+    }
+    </style>
+
+
+</head>
+
+<body>
+
+<div id="loader-outer">
+    <div id="loader-overlay" class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div class="activation" id="activationButton">
+    <div class="container-1 justify-content-centre">
+        <img class="image-1 img-fluid" src="http://placehold.it/360x150" alt="#">
+        <img style="margin-bottom: 40px;" class="image-2 img-fluid" src="http://placehold.it/360x150" alt="#">
+        <div class="text-center">
+            <h1 class="activate-text">Click here to activate your Account</h1> <!-- Adjusted margin-bottom -->
+            <a onclick="funClick('clscontinueActivation')">
+                <button class="activation-btn">Activation</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="activationTab" class="container-fluid clscontinueActivation" style="height: 100vh;">
+    <div class="centered-text">
+        <h2>Export data to any format you need</h2>
+    </div>
+    <div class="vertical-line"></div> <!-- Vertical line -->
+    <div class="row">
+        <div class="left-side">
+            <div class="text-content">
+                <p><span class="bold-text">Select important data points</span></p>
+                <p>Need to export your tickets, users, or organizations? It’s there. Need conversations or
+                    attachments? It’s here too.</p>
+                <p><span class="bold-text">Choose any format and create lists</span></p>
+                <p>Export to JSON, CSV, or any (custom) format you need. Create an export to use in our GDPR app,
+                    for your reporting purposes, or to import into your sales CRM.</p>
+            </div>
+        </div>
+        <div class="right-side">
+
+            <div class="form-content">
+                <form id="exportDataFormSubmitform">
+                    <div class="profile-image">
+                        <img name="userprofile" id="additionalInfoImage" src="https://picsum.photos/seed/picsum/100/80" alt=""
+                             style="border-radius: 50%;">
+                    </div>
+                    <div class="form-row">
+                        <input type="text" name="firstname" id="firstName" class="form-control" placeholder="First Name" required>
+                        <input type="text" name="lastname" id="lastName" class="form-control" placeholder="Last Name" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="email" name="email" id="emailAddress" class="form-control" placeholder="Email address" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="text" name="subdomains" id="subdomains" class="form-control" placeholder="Subdomain" required>
+                    </div>
+                    <input type="hidden" name="plan" class="form-control" id="plan"
+                                   placeholder="plan" value="free plan">
+<!--                    <button id="continueActivation" onclick="funClick('displaySupport')" type="submit"-->
+<!--                            class="btn btn-primary">Continue Activation-->
+<!--                    </button>-->
+                    <p id="alert_msg"
+                       style="font-size: 25px; margin-left: 10px; color:#17026e;"></p>
+                    <button type="submit" style="margin-left: 10px;" class="btn btn-primary">Continue Activation
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container clsSupport" id="navItems">
+    <div class="row clsbtnrow">
+
+        <div class="col-lg-2 col-sm-3 col-xs-3 col-md-3 btndiv">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle btntab btnticket border-0" type="button"
+                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Ticket
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" onclick="funClick('view');" href="#">Export By View</a></li>
+                    <li ><a class="dropdown-item free-class" onclick="funClick('search');" href="#">Export By Search</a></li>
+                    <li ><a class="dropdown-item free-class" onclick="funClick('time');" href="#">Export By Time</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-3 col-xs-3 col-md-3 btndiv">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle btntab btnComment border-0" type="button"
+                        id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                    Comment
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item free-class silver-class" onclick="funClick('comtime');" href="#">Export By Time</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-3 col-xs-3 col-md-3 btndiv">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle btntab btnUser border-0" type="button"
+                        id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                    User
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item free-class" onclick="funClick('usersearch');" href="#">Export By Search</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-3 col-xs-3 col-md-3 btndiv">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle btntab btnOrg border-0" type="button"
+                        id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                    Organization
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                    <li><a class="dropdown-item free-class silver-class" onclick="funClick('orgsearch');" href="#">Export By Search</a></li>
+                    <li><a class="dropdown-item free-class silver-class" onclick="funClick('orgTime');" href="#">Export By Time</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-3 col-xs-3 col-md-3 btndiv">
+            <div class="dropdown">
+                <button class="btn btnAttach dropdown-toggle btntab btnUser border-0" type="button"
+                        id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
+                    Attchment
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item free-class silver-class" onclick="funClick('attachment');" href="#">Export By Time</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-1 col-sm-3 col-xs-3 col-md-3 btndiv">
+            <div class="dropdown">
+                <button class="btn btnTalk dropdown-toggle btntab btnUser border-0" type="button"
+                        id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-expanded="false">
+                    Talk
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item free-class silver-class" onclick="funClick('talk');" href="#">Export By Time</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="setting_icon" style="float: right; width: auto;">
+            <i class="fa fa-cog fa-2x" onclick="funClick('setting')" style="color: #002a97;"></i>
+        </div>
+
+    </div>
+
+    <div class="row clsbtnrow" id="tickets">
+
+        <div class="col-lg-3 col-sm-6">
+            <h3 style="color:black">Ticket Export</h3>
+        </div>
+        <!--Select View Dropdwon starts-->
+        <div class="col-lg-4 col-sm-6 selectdiv hidden">
+            <select class="form-select" aria-label="Default select example" id="ticketView"
+                    onchange="checkSelections_selectView()">
+                <option selected>Select view</option>
+                <option value="All unsolved tickets">All unsolved tickets</option>
+                <option value="Pending tickets">Pending tickets</option>
+                <option value="Recently solved tickets">Recently solved tickets</option>
+                <option value="Recently updated tickets">Recently updated tickets</option>
+                <option value="Unassigned tickets">Unassigned tickets</option>
+                <option value="Your unsolved tickets">Your unsolved tickets</option>
+
+                <!-- Add other options here -->
+            </select>
+            <input type="text" class="form-control" placeholder="Search Query" name="email" id="ticketSearch">
+        </div>
+        <!--select view dropdown starts-->
+        <div class="col-lg-2 col-sm-2 selectdiv">
+            <select class="form-select" aria-label="Default select example" id="templateSelect"
+                    onchange="checkSelections()">
+                <option value="" selected>Please select</option>
+                <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                <option value="JSON" id="jsonOption">JSON</option>
+                <option value="XML" id="xmlOption">XML</option>
+            </select>
+        </div>
+        <!--select view dropdown ends-->
+
+        <!--select type dropdown starts-->
+        <div class="col-lg-2 col-sm-2 selectdiv">
+
+            <div class="dropdown">
+                <button class="btn dropdown-toggle form-select" type="button" id="multiSelectDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Select Type
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="multiSelectDropdown" id="multiSelectDropdown2">
+                    <li>
+                        <label>
+                            <input type="checkbox" value="requester" style="margin-left: 4px;">
+                            Requester
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" value="submitter" style="margin-left: 4px;">
+                            Submitter
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" value="assignee" style="margin-left: 4px;">
+                            Assignee
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" value="groups" style="margin-left: 4px;">
+                            Group
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" value="organization" style="margin-left: 4px;">
+                            Organization
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" value="metric_set" style="margin-left: 4px;">
+                            Brand
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" value="ticket_forms" style="margin-left: 4px;">
+                            Form
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" value="custom_statuses" style="margin-left: 4px;">
+                            Metric-set
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" value="Custom-Fields" style="margin-left: 4px;">
+                            Custom-Fields
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <!--ticket table starts-->
+        <div class="row " style="margin-top: 3%;">
+            <div class="col-12">
+                <table id="ticketviewTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value=""
+                                       id="flexCheckIndeterminate">
+                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                </label>
+                            </div>
+                        </th>
+                        <th scope="col" class="clsfirstCol">Ticket View</th>
+                        <th scope="col">Export Format</th>
+                        <th scope="col" class="clsLastCol">Ticket Type</th>
+                        <th scope="col"><i class="fa fa-trash" aria-hidden="true" onclick="myFunction()"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                </label>
+                            </div>
+                        </td>
+                        <td>All Tickets</td>
+                        <td>Excel</td>
+                        <td>Ticket</td>
+                        <td><i class="fa fa-trash" aria-hidden="true"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="fixed-bottom">
+                <hr/>
+
+                <!-- Button Group at the bottom -->
+                <div class="d-flex justify-content-end col-md-3" style="float: right; margin-bottom: 2%;">
+                    <button disabled type="button" class="btn btn-primary" style="background-color: #c7bcbc; color: #ffffff; border-color:#c7bcbc">
+                        Cancel
+                    </button>
+                    <button disabled type="button" class="btn btn-primary" style="background-color: #48a23d; color: #ffffff; border-color:#48a23d">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-primary" style="background-color: #3e7ede; color: #ffffff; border-color:#3e7ede" id="exportButton">
+                        Export
+                    </button>
+                </div>
+            </div>
+            <!--select type dropdown starts-->
+        </div>
+    </div>
+    <div class="row clsbtnrow" id="ticketsTime">
+
+        <div class="col-lg-3 col-sm-6">
+            <h3>Ticket Export</h3>
+        </div>
+
+        <!--        <div class="col-lg-2 col-sm-6 selectdiv">-->
+        <!--            <select class="form-select" aria-label="Default select example" id="attachmentView">-->
+        <!--                <option selected>Select View</option>-->
+        <!--                <option value="1">All Comments</option>-->
+        <!--                <option value="2">Resolved Comments</option>-->
+        <!--                <option value="3">Pending Comments</option>-->
+        <!--            </select>-->
+        <!--        </div>-->
+        <div class="col-lg-2 col-sm-6 selectdiv">
+            <select class="form-select" aria-label="Default select example" id="templateSelectTime"
+                    onchange="checkSelectionsTime()">
+                <option value="" selected>Please select</option>
+                <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                <option value="JSON">JSON</option>
+                <option value="XML">XML</option>
+            </select>
+        </div>
+        <div class="col-lg-2 col-sm-2 selectdiv datediv">
+            <input type="text" name="startdate" id="ticket_startdate" class="form-control" value="02/02/2024"/>
+        </div>
+        <div class="col-lg-2 col-sm-2 selectdiv datediv">
+            <input type="text" class="form-control" name="enddate" id="ticket_enddate" value="02/15/2024"/>
+        </div>
+        <!--ticket table starts-->
+        <div class="row clstablerow" style="margin-top: 3%;">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value=""
+                                       id="flexCheckIndeterminate">
+                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                </label>
+                            </div>
+                        </th>
+                        <th scope="col" class="clsfirstCol">Ticket View</th>
+                        <th scope="col">Export Format</th>
+                        <th scope="col" class="clsLastCol">Ticket Type</th>
+                        <th scope="col"><i class="fa fa-trash" aria-hidden="true" onclick="myFunction()"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                </label>
+                            </div>
+                        </td>
+                        <td>All Tickets</td>
+                        <td>Excel</td>
+                        <td>Ticket</td>
+                        <td><i class="fa fa-trash" aria-hidden="true"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- ticket table ends-->
+        <!-- Divider Line -->
+        <div id="fixed-bottom">
+            <hr/>
+
+            <!-- Button Group at the bottom -->
+            <div class="d-flex justify-content-end col-md-3" style="float: right; margin-bottom: 2%;">
+                <button disabled type="button" class="btn btn-primary" style="background-color: #c7bcbc; color: #ffffff; border-color:#c7bcbc">Cancel
+                </button>
+                <button disabled type="button" class="btn btn-primary"
+                        style="background-color: #48a23d; color: #ffffff; border-color:#48a23d">Save
+                </button>
+                <button type="button" class="btn btn-primary" style="background-color: #3e7ede; color: #ffffff; border-color:#3e7ede"
+                        id="exportButton_TimeBasedTicket">Export
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <!--comment starts-->
+    <div class="row clsbtnrow" id="comments">
+
+        <div class="col-lg-2 col-sm-6">
+            <h3>Comment Export</h3>
+        </div>
+        <div class="col-lg-2 col-sm-6 selectdiv">
+            <select id="commentTemplateSelect" class="form-select" aria-label="Default select example"
+                    onchange="checkCommentSelections()">
+                <option value="" selected>Please select</option>
+                <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                <option value="JSON">JSON</option>
+                <option value="XML">XML</option>
+            </select>
+        </div>
+        <div class="col-lg-2 col-sm-6 selectdiv">
+            <input type="text" name="startdate" id="commentstartdate" class="form-control" value="02/02/2024"/>
+        </div>
+        <div class="col-lg-2 col-sm-6 selectdiv">
+            <input type="text" class="form-control" name="enddate" id="commentenddate" value="02/15/2024"/>
+        </div>
+        <!--comment table starts-->
+        <div class="row clstablerow" style="margin-top: 3%;">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value=""
+                                       id="flexCheckIndeterminate">
+                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                </label>
+                            </div>
+                        </th>
+                        <th scope="col" class="clsfirstCol">Ticket View</th>
+                        <th scope="col">Export Format</th>
+                        <th scope="col" class="clsLastCol">Ticket Type</th>
+                        <th scope="col"><i class="fa fa-trash" aria-hidden="true" onclick="myFunction()"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                </label>
+                            </div>
+                        </td>
+                        <td>All Comments</td>
+                        <td>Excel</td>
+                        <td>Comment</td>
+                        <td><i class="fa fa-trash" aria-hidden="true"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--comment table ends-->
+
+        <!-- Divider Line -->
+        <div id="fixed-bottom">
+            <hr/>
+
+            <!-- Button Group at the bottom -->
+            <div class="d-flex justify-content-end col-md-3" style="float: right; margin-bottom: 2%;">
+                <button disabled type="button" class="btn btn-primary" style="background-color: #c7bcbc; color: #ffffff; border-color:#c7bcbc">Cancel
+                </button>
+                <button disabled type="button" class="btn btn-primary"
+                        style="background-color: #48a23d; color: #ffffff; border-color:#48a23d">Save
+                </button>
+                <button type="button" class="btn btn-primary" style="background-color: #3e7ede; color: #ffffff; border-color:#3e7ede" id="comment_export_Button">Export
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <!--comments ends-->
+
+    <!--users start-->
+    <div class="row clsbtnrow" id="users">
+
+        <div class="col-lg-3 col-sm-6">
+            <h3>User Export</h3>
+        </div>
+        <div class="col-lg-4 col-sm-6 selectdiv">
+            <input type="text" class="form-control" placeholder="Search Query" name="email" id="userSearch">
+        </div>
+        <div class="col-lg-4 col-sm-6 selectdiv">
+            <select id="userTemplateSelect" class="form-select" aria-label="Default select example"
+                    onchange="checkUserSelections()">
+                <option value="" selected>Please select</option>
+                <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                <option value="JSON">JSON</option>
+                <option value="XML">XML</option>
+            </select>
+        </div>
+        <!--users table starts-->
+        <div class="row clstablerow" style="margin-top: 3%;">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value=""
+                                       id="flexCheckIndeterminate">
+                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                </label>
+                            </div>
+                        </th>
+                        <th scope="col" class="clsfirstCol">Ticket View</th>
+                        <th scope="col">Export Format</th>
+                        <th scope="col" class="clsLastCol">Ticket Type</th>
+                        <th scope="col"><i class="fa fa-trash" aria-hidden="true" onclick="myFunction()"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                </label>
+                            </div>
+                        </td>
+                        <td>All Users</td>
+                        <td>Excel</td>
+                        <td>User</td>
+                        <td><i class="fa fa-trash" aria-hidden="true"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- users table ends-->
+
+        <!-- Divider Line -->
+        <div id="fixed-bottom">
+            <hr/>
+
+            <!-- Button Group at the bottom -->
+            <div class="d-flex justify-content-end col-md-3" style="float: right; margin-bottom: 2%;">
+                <button disabled  type="button" class="btn btn-primary" style="background-color: #c7bcbc; color: #ffffff; border-color:#c7bcbc">Cancel
+                </button>
+                <button disabled type="button" class="btn btn-primary"
+                        style="background-color: #48a23d; color: #ffffff; border-color:#48a23d">Save
+                </button>
+                <button type="button" class="btn btn-primary" style="background-color: #3e7ede; color: #ffffff; border-color:#3e7ede"
+                        id="search_user_export_Button">Export
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <!--user ends-->
+    <!--organization section starts-->
+    <div class="row clsbtnrow" id="organization">
+
+        <div class="col-lg-3 col-sm-6">
+            <h3>Organization Export</h3>
+        </div>
+        <div class="col-lg-5 col-sm-6 selectdiv">
+
+        <input type="text" class="form-control" placeholder="Search Query" name="email" id="orgSearchInput">
+
+        </div>
+
+        <div class="col-lg-3 col-sm-6 selectdiv">
+            <select id="organizationTemplateSelect" class="form-select" aria-label="Default select example" onchange="checkOrganizationSelections()">
+                <option value="" selected>Please select</option>
+                <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                <option value="JSON">JSON</option>
+                <option value="XML">XML</option>
+            </select>
+        </div>
+
+        <!-- organization table starts-->
+        <div class="row clstablerow" style="margin-top: 3%;">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value=""
+                                       id="flexCheckIndeterminate">
+                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                </label>
+                            </div>
+                        </th>
+                        <th scope="col" class="clsfirstCol">Ticket View</th>
+                        <th scope="col">Export Format</th>
+                        <th scope="col" class="clsLastCol">Ticket Type</th>
+                        <th scope="col"><i class="fa fa-trash" aria-hidden="true" onclick="myFunction()"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                </label>
+                            </div>
+                        </td>
+                        <td>All Organizations</td>
+                        <td>Excel</td>
+                        <td>Organization</td>
+                        <td><i class="fa fa-trash" aria-hidden="true"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--organization table ends-->
+
+        <!-- Divider Line -->
+        <div id="fixed-bottom">
+            <hr/>
+
+            <!-- Button Group at the bottom -->
+            <div class="d-flex justify-content-end col-md-3" style="float: right; margin-bottom: 2%;">
+                <button disabled type="button" class="btn btn-primary" style="background-color: #c7bcbc; color: #ffffff; border-color:#c7bcbc">Cancel
+                </button>
+                <button disabled type="button" class="btn btn-primary"
+                        style="background-color: #48a23d; color: #ffffff; border-color:#48a23d">Save
+                </button>
+                <button type="button" class="btn btn-primary" style="background-color: #3e7ede; color: #ffffff; border-color:#3e7ede" id="search_org_export_Button">Export
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row clsbtnrow" id="organizationTime">
+
+        <div class="col-lg-3 col-sm-6">
+            <h3>Organization Export</h3>
+        </div>
+
+
+        <div class="col-lg-3 col-sm-6 selectdiv">
+            <select id="orgtemplateSelect_time" class="form-select" aria-label="Default select example" onchange="checkOrganizationSelections_time()">
+                <option value="" selected>Please select</option>
+                <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                <option value="JSON">JSON</option>
+                <option value="XML">XML</option>
+            </select>
+        </div>
+        <div class="col-lg-3 col-sm-2 selectdiv datediv">
+            <input type="text" name="startdate" id="orgstartdate" class="form-control" value="02/02/2024"/>
+        </div>
+        <div class="col-lg-2 col-sm-3 selectdiv datediv">
+            <input type="text" class="form-control" name="enddate" id="orgenddate" value="02/15/2024"/>
+        </div>
+        <!-- organization table starts-->
+        <div class="row clstablerow" style="margin-top: 3%;">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value=""
+                                       id="flexCheckIndeterminate">
+                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                </label>
+                            </div>
+                        </th>
+                        <th scope="col" class="clsfirstCol">Ticket View</th>
+                        <th scope="col">Export Format</th>
+                        <th scope="col" class="clsLastCol">Ticket Type</th>
+                        <th scope="col"><i class="fa fa-trash" aria-hidden="true" onclick="myFunction()"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                </label>
+                            </div>
+                        </td>
+                        <td>All Organizations</td>
+                        <td>Excel</td>
+                        <td>Organization</td>
+                        <td><i class="fa fa-trash" aria-hidden="true"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--organization table ends-->
+
+        <!-- Divider Line -->
+        <div id="fixed-bottom">
+            <hr/>
+
+            <!-- Button Group at the bottom -->
+            <div class="d-flex justify-content-end col-md-3" style="float: right; margin-bottom: 2%;">
+                <button disabled type="button" class="btn btn-primary" style="background-color: #c7bcbc; color: #ffffff; border-color:#c7bcbc">Cancel
+                </button>
+                <button disabled type="button" class="btn btn-primary"
+                        style="background-color: #48a23d; color: #ffffff; border-color:#48a23d">Save
+                </button>
+                <button type="button" class="btn btn-primary" style="background-color: #3e7ede; color: #ffffff; border-color:#3e7ede" id="time_org_export_Button">Export
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <!--organization ends-->
+
+    <!--attachment starts-->
+    <div class="row clsbtnrow" id="attachments">
+
+        <div class="col-lg-3 col-sm-6">
+            <h3>Attachment Export</h3>
+        </div>
+        <div class="col-lg-2 col-sm-6 selectdiv">
+            <select class="form-select" aria-label="Default select example" id="attachmentTemplateSelect" onchange="checkAttachmentSelections()">
+                <option value="" selected>Please select</option>
+                <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                <option value="JSON">JSON</option>
+                <option value="XML">XML</option>
+            </select>
+        </div>
+
+        <div class="col-lg-2 col-sm-2 selectdiv datediv">
+            <input type="text" name="startdate" id="attachstartdate" class="form-control" value="01/15/2024"/>
+        </div>
+        <div class="col-lg-2 col-sm-2 selectdiv datediv">
+            <input type="text" class="form-control" name="enddate" id="attachenddate" value="02/15/2024"/>
+        </div>
+        <!-- attaxhment table starts-->
+        <div class="row clstablerow" style="margin-top: 3%;">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value=""
+                                       id="flexCheckIndeterminate">
+                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                </label>
+                            </div>
+                        </th>
+                        <th scope="col" class="clsfirstCol">Ticket View</th>
+                        <th scope="col">Export Format</th>
+                        <th scope="col" class="clsLastCol">Ticket Type</th>
+                        <th scope="col"><i class="fa fa-trash" aria-hidden="true" onclick="myFunction()"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                </label>
+                            </div>
+                        </td>
+                        <td>All Attachments</td>
+                        <td>Excel</td>
+                        <td>Attachment</td>
+                        <td><i class="fa fa-trash" aria-hidden="true"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- attachment table ends-->
+
+        <!-- Divider Line -->
+        <div id="fixed-bottom">
+            <hr/>
+
+            <!-- Button Group at the bottom -->
+            <div class="d-flex justify-content-end col-md-3" style="float: right; margin-bottom: 2%;">
+                <button disabled type="button" class="btn btn-primary" style="background-color: #c7bcbc; color: #ffffff; border-color:#c7bcbc">Cancel
+                </button>
+                <button disabled type="button" class="btn btn-primary"
+                        style="background-color: #48a23d; color: #ffffff; border-color:#48a23d">Save
+                </button>
+                <button type="button" class="btn btn-primary" style="background-color: #3e7ede; color: #ffffff; border-color:#3e7ede" id="attachment_export_Button">Export
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--attachment ends-->
+
+    <!--talk starts-->
+    <div class="row clsbtnrow" id="talkDiv">
+
+        <div class="col-lg-3 col-sm-6">
+            <h3>Talk Export</h3>
+        </div>
+        <div class="col-lg-2 col-sm-6 selectdiv">
+            <select id="legsTemplateSelect" class="form-select" aria-label="Default select example" onchange="checkLegsSelections()">
+                <option value="" selected>Please select</option>
+                <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                <option value="JSON">JSON</option>
+                <option value="XML">XML</option>
+            </select>
+        </div>
+        <div class="col-lg-2 col-sm-2 selectdiv datediv">
+            <input type="text" name="startdate" id="talkstartdate" class="form-control" value="02/02/2024"/>
+        </div>
+        <div class="col-lg-2 col-sm-2 selectdiv datediv">
+            <input type="text" class="form-control" name="enddate" id="talkenddate" value="02/15/2024"/>
+        </div>
+
+        <!-- talk table starts-->
+        <div class="row clstablerow" style="margin-top: 3%;">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value=""
+                                       id="flexCheckIndeterminate">
+                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                </label>
+                            </div>
+                        </th>
+                        <th scope="col" class="clsfirstCol">Ticket View</th>
+                        <th scope="col">Export Format</th>
+                        <th scope="col" class="clsLastCol">Ticket Type</th>
+                        <th scope="col"><i class="fa fa-trash" aria-hidden="true" onclick="myFunction()"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                </label>
+                            </div>
+                        </td>
+                        <td>All Talks</td>
+                        <td>Excel</td>
+                        <td>Talk</td>
+                        <td><i class="fa fa-trash" aria-hidden="true"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- talk table ends-->
+
+        <!-- Divider Line -->
+        <div id="fixed-bottom">
+            <hr/>
+
+            <!-- Button Group at the bottom -->
+            <div class="d-flex justify-content-end col-md-3" style="float: right; margin-bottom: 2%;">
+                <button disabled type="button" class="btn btn-primary" style="background-color: #c7bcbc; color: #ffffff; border-color:#c7bcbc">Cancel
+                </button>
+                <button disabled type="button" class="btn btn-primary"
+                        style="background-color: #48a23d; color: #ffffff; border-color:#48a23d">Save
+                </button>
+                <button type="button" class="btn btn-primary" style="background-color: #3e7ede; color: #ffffff; border-color:#3e7ede" id="time_legs_export_Button">Export
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--talk ends-->
+    <div class="row clsbtnrow" id="settings" style="margin-top: 20px;">
+        <div class="col-sm-4 clscard">
+            <div class="card ">
+                <div class="card-body">
+                    <div class="circle-icon" style="background: none;">
+                        <img class="settings_profile" src="https://bluerockapps.co/wp-content/uploads/2024/04/template.png" alt="" style="border-radius: 50%;">
+                    </div>
+                    <a id="free-tem-plan" onclick="funClick('settingTemplate')">
+                        <h5 class="card-footer" style="background: none; text-align: center;">Template</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 clscard">
+            <div class="card">
+                <div class="card-body">
+                    <div class="circle-icon" style="background: none;">
+                        <img class="settings_profile" src="https://bluerockapps.co/wp-content/uploads/2024/04/Saved-export.png" alt="" style="border-radius: 50%;">
+                    </div>
+                    <a id="free-save-plan" onclick="funClick('savedExport')">
+                        <h5 class="card-footer" style="background: none; text-align: center;">Saved Export</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 clscard">
+            <div class="card">
+                <div class="card-body">
+                    <div class="circle-icon" style="background: none;">
+                        <img class="settings_profile" src="https://bluerockapps.co/wp-content/uploads/2024/04/subscription-1.png" alt="" style="border-radius: 50%;">
+                    </div>
+                    <a onclick="funClick('subscription')">
+                        <h5 class="card-footer" style="background: none; text-align: center;">Subscription</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 clscard">
+            <div class="card">
+                <div class="card-body">
+                    <div class="circle-icon" style="background: none;">
+                        <img class="settings_profile" src="https://bluerockapps.co/wp-content/uploads/2024/04/about-us.png" alt="" style="border-radius: 50%;">
+                    </div>
+                    <a onclick="funClick('about')">
+                        <h5 class="card-footer" style="background: none; text-align: center;">About Us</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 clscard">
+            <div class="card">
+                <div class="card-body">
+                    <div class="circle-icon" style="background: none;">
+                        <img class="settings_profile" src="https://bluerockapps.co/wp-content/uploads/2024/04/help.png" alt="" style="border-radius: 50%;">
+                    </div>
+                    <a onclick="funClick('helpcenter')">
+                        <h5 class="card-footer" style="background: none; text-align: center;">Help Center</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="templates" class="container mt-3 hidden">
+        <div id="export">
+            <h2>Export templates</h2>
+            <p>Here you can manage your export templates.</p>
+        </div>
+        <div class="container mt-3 d-flex justify-content-end">
+            <button style="background-color: #ffa5b3; margin-bottom: -10px; border: none;" type="button"
+                    onclick="funClick('addTemplate')" class="btn btn-outline-primary">Add Template
+            </button>
+        </div>
+        <div class="mb-3" id="tab-button">
+            <div class="mb-3 d-flex justify-content-between">
+                <div>
+                    <ul class="nav nav-underline" id="toggleTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a style="padding-inline: 12px; margin-right:-8px;" class="nav-link active"
+                               id="active-tab" data-bs-toggle="tab" href="#activeContent" role="tab"
+                               aria-controls="activeContent" aria-selected="true">Active</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a style="padding-inline: 12px; margin-left:-8px;" class="nav-link" id="inactive-tab"
+                               data-bs-toggle="tab" href="#inactiveContent" role="tab"
+                               aria-controls="inactiveContent" aria-selected="false">Inactive</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr style="margin-top: -18px;"/>
+            <div class="tab-content mt-3">
+                <div class="tab-pane fade show active" id="activeContent" role="tabpanel"
+                     aria-labelledby="active-tab">
+                    <!-- Content for the Active tab -->
+                    <table class="table" id="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Description<i class="bi bi-chevron-expand"></i></th>
+                            <th scope="col">Filename<i class="bi bi-chevron-expand"></i></th>
+                            <th scope="col">MIME Type<i class="bi bi-chevron-expand"></i></th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>CSV UTF-8 (comma delimited)</td>
+                            <td>{type}-export-{date}.csv</td>
+                            <td>text/csv</td>
+                            <td><i class="bi bi-three-dots-vertical " data-bs-toggle="dropdown"></i>
+                                <ul class="dropdown-menu dropdown-menu-end" style="width: 80px;">
+                                    <li><a class="dropdown-item" href="#" data-action="edit"
+                                           style="opacity: 60%;">Edit</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"
+                                           data-action="deactivate">Deactivate</a>
+                                    </li>
+                                </ul>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>CSV UTF-8 (semicolon delimited)</td>
+                            <td>{type}-export-{date}.csv</td>
+                            <td>text/csv</td>
+                            <td><i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#" data-action="edit"
+                                           style="opacity: 60%;">Edit</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"
+                                           data-action="deactivate">Deactivate</a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>JSON</td>
+                            <td>{type}-export-{date}.json</td>
+                            <td>application/json</td>
+                            <td><i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#" data-action="edit"
+                                           style="opacity: 60%;">Edit</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"
+                                           data-action="deactivate">Deactivate</a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>XML</td>
+                            <td>{type}-export-{date}.xml</td>
+                            <td>text/xml</td>
+                            <td><i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#" data-action="edit"
+                                           style="opacity: 60%;">Edit</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"
+                                           data-action="deactivate">Deactivate</a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="tab-pane fade" id="inactiveContent" role="tabpanel" aria-labelledby="inactive-tab">
+                    <!-- Content for the Inactive tab -->
+                    <!-- Add content specific to the Inactive tab if needed -->
+                    <table class="table" id="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Description<i class="bi bi-chevron-expand"></i></th>
+                            <th scope="col">Filename<i class="bi bi-chevron-expand"></i></th>
+                            <th scope="col">MIME Type<i class="bi bi-chevron-expand"></i></th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>CSV UTF-8 (comma delimited)</td>
+                            <td>{type}-export-{date}.csv</td>
+                            <td>text/csv</td>
+                            <td><i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#" data-action="edit"
+                                           style="opacity: 60%;">Edit</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"
+                                           data-action="deactivate">Deactivate</a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--add export starts-->
+    <div id="addTemplateExport" class="container hidden">
+        <h2>Add Export Template</h2>
+        <form style="width: 100%;">
+            <div class="mb-3">
+                <label for="templateName" class="form-label fw-bold">Description*</label>
+                <input type="text" class="form-control" id="exportDescription">
+            </div>
+            <div class="mb-3">
+                <label for="templateDescription" class="form-label fw-bold">Filename*</label>
+                <input class="form-control" id="exportFilename"></input>
+            </div>
+            <div class="mb-3">
+                <label for="templateName" class="form-label fw-bold">MIME Type*</label>
+                <input type="text" class="form-control" id="exportMimeType">
+            </div>
+            <div class="mb-3">
+                <label for="templateDescription" class="form-label fw-bold">Template*</label>
+                <textarea class="form-control" id="exportTemplate" rows="3"></textarea>
+            </div>
+        </form>
+        <div style="">
+            <hr/>
+            <div class="d-flex justify-content-end">
+                <button class="btn mb-3 m-1 text-primary">Cancel</button>
+                <button class="btn mb-3 m-1" style="background-color: #a8a8a8;border: none;" disabled>Create
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--add export ends-->
+
+    <!-- ---------------------------------------Saved_exports Starts here---------------------------------------- -->
+    <div id="saved_exports" class="container m-3 hidden">
+        <div>
+            <h3>Saved exports</h3>
+            <p>Here you can manage and load your saved exports</p>
+        </div>
+
+        <div style="margin-top: 80px;">
+            <table class="table" id="table">
+                <thead>
+                <tr>
+                    <th scope="col">Description<i class="bi bi-chevron-expand"></i></th>
+                    <th scope="col">Type<i class="bi bi-chevron-expand"></i></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                <!-- Add you table body content here -->
+                </tbody>
+            </table>
+
+            <!-- Divider Line -->
+            <div id="fixed-bottom">
+                <hr/>
+
+                <!-- Button Group at the bottom -->
+                <div class="d-flex justify-content-end col-md-3" style="float: right; margin-bottom: 2%;">
+                    <button disabled type="button" class="btn btn-primary" style="background-color: #c7bcbc; color: #ffffff; border-color:#c7bcbc">
+                        Cancel
+                    </button>
+                    <button disabled type="button" class="btn btn-primary"
+                            style="background-color: #48a23d; color: #ffffff; border-color:#48a23d">Save
+                    </button>
+                    <button type="button" class="btn btn-primary" style="background-color: #3e7ede; color: #ffffff; border-color:#3e7ede">
+                        Export
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Saved_exports ends here-->
+
+
+    <!-- Subscription Component -->
+    <div id="subscription" class="container m-3 hidden">
+        <h2 class="mb-4">Subscription</h2>
+        <div class="d-flex justify-content-sm-between align-item-center " style="gap: 5px;">
+            <!-- Free Plan -->
+            <div class="col-sm-6 col-md-4" style="height: 400px;" id="free_Plan">
+                <div id="freePlan" class="card h-100 plan-card"
+                     style="border-radius: 15px; border: none; background-color: #f7f7f7; margin-inline: 2px;">
+                    <p class="text-light"
+                       style="font-size: 10px; margin: auto; padding: 4px; margin-top: -10px; background-color: #2995a8; width: max-content; display: none;">
+                        Current Plan
+                    </p>
+                    <div class="card-body sub-text-center" style="color: #17494d;">
+                        <h4>Free Plan</h4>
+<!--                        <hr>-->
+<!--                        <p>Our plans offer various features to help you manage your tasks efficiently.</p>-->
+<!--                        <hr>-->
+                        <ul style="list-style-type: disc; text-align: left; padding-left: 20px; font-size: 75%;">
+                            <li>Export tickets by view</li>
+                            <li>Select up to 12 fields</li>
+                            <li>Export using 2 different CSV formats</li>
+                        </ul>
+                        <div
+                                style=" position: absolute; text-align: center; margin-bottom: 0%; left: 50%; transform: translateX(-50%);">
+                            <button class="btn rounded-pill"
+                                    style="background-color: #ffa5b3; color: #e9ecef; width: 150px; margin-top: 114%;">
+                                <a href="https://bluerockapps.co/" target="_blank"
+                                   style="text-decoration: none; color: inherit;">Talk to Sales</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Silver Plan -->
+            <div class="col-sm-6 col-md-4" style="height: 400px;" id="professional_Plan">
+                <div id="SilverPlan" class="card h-100 plan-card"
+                     style="border-radius: 15px; border: none; background-color: #f7f7f7; margin-inline: 2px;">
+                    <p class="text-light"
+                       style="font-size: 10px; margin: auto; padding: 4px; margin-top: -10px; background-color: #2995a8; width: max-content; display: none;">
+                        Current Plan
+                    </p>
+                    <div class="card-body sub-text-center" style="color: #17494d;">
+                        <h4>Silver Plan</h4>
+<!--                        <hr>-->
+                        <p>Free trial for 7 days then $69.00 per month.</p>
+                        <hr>
+                        <ul style="list-style-type: disc; text-align: left; padding-left: 20px; font-size: 75%;;">
+                            <li>Export tickets</li>
+                            <li>Export users</li>
+                            <li>Save & load export configurations</li>
+                            <li>Export using CSV, JSON and XML formats</li>
+                        </ul>
+                        <div
+                                style=" position: absolute; text-align: center; margin-bottom: 0%; left: 50%; transform: translateX(-50%);">
+                            <button class="btn rounded-pill"
+                                    style="background-color: #ffa5b3; color: #e9ecef; width: 150px; margin-top: 48%;">
+                                <a href="https://bluerockapps.co/" target="_blank"
+                                   style="text-decoration: none; color: inherit;">Talk to Sales</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gold Plan -->
+            <div class="col-sm-6 col-md-4" style="height: 400px;" id="enterprise_Plan">
+                <div id="GoldPlan" class="card h-100 plan-card"
+                     style="border-radius: 15px; border: none; background-color: #f7f7f7; margin-inline: 2px;">
+                    <p class="text-light"
+                       style="font-size: 10px; margin: auto; padding: 4px; margin-top: -10px; background-color: #2995a8; width: max-content; display: none;">
+                        Current Plan
+                    </p>
+                    <div class="card-body sub-text-center" style="color: #17494d;">
+                        <h4>Gold Plan</h4>
+<!--                        <hr>-->
+                        <p>Free trial for 7 days then $169.00 per month.</p>
+                        <hr>
+                        <ul style="list-style-type: disc; text-align: left; padding-left: 20px; font-size: 75%;">
+                            <li>Export tickets</li>
+                            <li>Export organizations</li>
+                            <li>Export users</li>
+                            <li>Export comments</li>
+                            <li>Export attachments</li>
+                            <li>Save & load export configurations</li>
+                            <li>Export using CSV, JSON and XML formats</li>
+                            <li>Create your own export templates</li>
+                        </ul>
+                        <div
+                                style=" position: absolute; text-align: center; margin-bottom: 0%; left: 50%; transform: translateX(-50%);">
+                            <button class="btn rounded-pill"
+                                    style="background-color: #ffa5b3; color: #e9ecef; width: 150px; margin-top: 0%;">
+                                <a href="https://bluerockapps.co/" target="_blank"
+                                   style="text-decoration: none; color: inherit;">Talk to Sales</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
+
+    </div>
+    <!-- End of Subscription Component -->
+
+
+    <!-- About Component -->
+    <div id="about" class="container mt-3 hidden">
+        <div style="margin-bottom: 40px;">
+            <h2>SETTINGS - About Us</h2>
+            <p>This is a Premier Technology Partner of Zendesk.
+                And with over 15 complementary features the biggest Add-on partner.
+            </p>
+        </div>
+        <div id="about_second">
+            <h3>Release notes</h3>
+            <p>Latest version 2.1</p>
+        </div>
+        <br>
+        <div id="about_third">
+            <h3>Support</h3>
+            <p>Visit our <a href="https://bluerockapps.co/" style="text-decoration: none;" target="_blank">Help
+                Center <i class="bi bi-arrow-up-right-square"></i></a></p>
+        </div>
+    </div>
+    <!-- End of About Component -->
+
+</div>
+</div>
+</body>
+<script>
+    // ----------------------------- Loaders -----------------------------
+    function showLoader() {
+      document.getElementById('loader-outer').style.display = 'block';
+    }
+    function hideLoader() {
+      document.getElementById('loader-outer').style.display = 'none';
+    }
+</script>
+<script src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.min.js"></script>
+
+
+<script src="js/ticket/ticket.js"></script>
+<script src="js/ticket/users.js"></script>
+<script src="js/ticket/comments.js"></script>
+<script src="js/ticket/organizations.js"></script>
+<script src="js/ticket/attachments.js"></script>
+<script src="js/ticket/calls_legs.js"></script>
+
+<!--<script src="js/user/search_based_users.js"></script>-->
+<!--<script src="js/comments/time_based_comments.js"></script>-->
+<script>
+    $(document).ready(function () {
+        $('.clsSupport').hide();
+        $('.clscontinueActivation').hide();
+        $('#organizationTime').hide();
+        $('#ticketsTime').hide();
+        $('#ticketstartdate').hide();
+        $('#ticketenddate').hide();
+        $('#about').hide();
+        $('#subscription').hide();
+        $('#saved_exports').hide();
+        $('#addTemplateExport').hide();
+        $('#templates').hide();
+        $('#settings').hide();
+        $('.clstablerow').hide();
+        $('.selType').append('<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">');
+        $('#ticketSearch').hide();
+        $('#ticketDate').hide();
+        $('#comments').hide();
+        $('#users').hide();
+        $('#organization').hide();
+        $('#attachments').hide();
+        $('#talkDiv').hide();
+        $('#multiSelectDropdown').hide();
+        $('input[name="dates"]').daterangepicker();
+    });
+
+    var start_time = moment().subtract(1, 'days').format('YYYY-MM-DD');
+    var end_time = moment().format('YYYY-MM-DD');
+    $(function () {
+        $('input[name="startdate"], input[name="enddate"]').daterangepicker({
+            // opens: 'left',
+            singleDatePicker: true,
+            showDropdowns: true,
+            minYear: 2001,
+            maxYear: parseInt(moment().format('YYYY'), 10)
+        }, function (start, end, label) {
+            if ($(this.element).attr('name') === 'startdate') {
+                start_time = start.format('YYYY-MM-DD')
+            } else if ($(this.element).attr('name') === 'enddate') {
+                end_time = end.format('YYYY-MM-DD')
+            }
+        });
+    });
+    function funClick(para) {
+        $('.clstablerow').show();
+        if (para == 'search') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').hide();
+            $('#users').hide();
+            $('#tickets').show();
+            $('#comments').hide();
+            $('#ticketView').hide();
+            $('#ticketDate').hide();
+            $('#organization').hide();
+            $('#ticketSearch').show();
+            $('#talkDiv').hide();
+            $('.clsfirstCol').text('Ticket View');
+            $('.clsLastCol').text('Ticket Type');
+            $('#attachments').hide();
+        } else if (para == 'view') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#users').hide();
+            $('#tickets').show();
+            $('#comments').hide();
+            $('#ticketView').show();
+            $('#ticketDate').hide();
+            $('#ticketSearch').hide();
+            $('.clsfirstCol').text('Ticket View');
+            $('.clsLastCol').text('Ticket Type');
+            $('#attachments').hide();
+        } else if (para == 'time') {
+            $('#organizationTime').hide();
+            $('#ticketstartdate').show();
+            $('#ticketenddate').show();
+            $('#ticketsTime').show();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#users').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#ticketView').hide();
+            $('#ticketDate').show();
+            $('#ticketSearch').hide();
+            $('.clsfirstCol').text('Ticket View');
+            $('.clsLastCol').text('Ticket Type');
+            $('#attachments').hide();
+        } else if (para == 'comtime') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#tickets').hide();
+            $('#comments').show();
+            $('#users').hide();
+            $('.clsfirstCol').text('Comment View');
+            $('.clsLastCol').text('Comment Type');
+            $('#attachments').hide();
+        }
+        else if (para == 'usersearch') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').show();
+            $('.clsfirstCol').text('User View');
+            $('.clsLastCol').text('User Type');
+            $('#attachments').hide();
+
+        }
+        else if (para == 'orgsearch') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').show();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Organization View');
+            $('.clsLastCol').text('Organization Type');
+            $('#orgSearchInput').show();
+            $('#orgDateInput').hide();
+            $('#attachments').hide();
+        }
+        else if (para == 'orgTime') {
+            $('#orgstartdate').show();
+            $('#orgenddate').show();
+            $('#organizationTime').show();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Organization View');
+            $('.clsLastCol').text('Organization Type');
+            $('#orgSearchInput').hide();
+            $('#orgDateInput').show();
+            $('#attachments').hide();
+
+        }
+        else if (para == 'attachment') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#attachments').show();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Attachment View');
+            $('.clsLastCol').text('Attachment Type');
+            $('#orgSearchInput').hide();
+            $('#orgDateInput').show();
+            $('#attachstartdate').show();
+            $('#attachenddate').show();
+
+        }
+        else if (para == 'talk') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#settings').hide();
+            $('#organization').hide();
+            $('#attachments').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Talk View');
+            $('.clsLastCol').text('Talk Type');
+            $('#orgSearchInput').hide();
+            $('#orgDateInput').hide();
+            $('#templates').hide();
+            $('#talkDiv').show();
+            $('#talkstartdate').show();
+            $('#talkenddate').show();
+
+        } else if (para == 'setting') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').show();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#attachments').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Talk View');
+            $('.clsLastCol').text('Talk Type');
+            $('#orgSearchInput').hide();
+            $('#orgDateInput').hide();
+            $('.clstablerow').hide();
+        } else if (para == 'settingTemplate') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#attachments').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Talk View');
+            $('.clsLastCol').text('Talk Type');
+            $('#orgSearchInput').hide();
+            $('#orgDateInput').hide();
+            $('.clstablerow').hide();
+            $('#templates').show();
+        } else if (para == 'addTemplate') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').show();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#attachments').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Talk View');
+            $('.clsLastCol').text('Talk Type');
+            $('#orgSearchInput').hide();
+            $('#orgDateInput').hide();
+            $('.clstablerow').hide();
+            $('#templates').hide();
+            $('.clsruler').css('bottom', '0px');
+        } else if (para == 'savedExport') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').show();
+            $('#addTemplateExport').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#attachments').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Talk View');
+            $('.clsLastCol').text('Talk Type');
+            $('#orgSearchInput').hide();
+            $('#orgDateInput').hide();
+            $('.clstablerow').hide();
+            $('#templates').hide();
+        }
+        else if (para == 'subscription') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('.btnbottom').css('bottom', '-90px');
+            $('#about').hide();
+            $('#subscription').show();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#attachments').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Talk View');
+            $('.clsLastCol').text('Talk Type');
+            $('#orgSearchInput').hide();
+            $('#orgDateInput').hide();
+            $('.clstablerow').hide();
+            $('#templates').hide();
+        } else if (para == 'about') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').show();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#attachments').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Talk View');
+            $('.clsLastCol').text('Talk Type');
+            $('#orgSearchInput').hide();
+            $('#orgDateInput').hide();
+            $('.clstablerow').hide();
+            $('#templates').hide();
+        } else if (para == 'helpcenter') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#settings').hide();
+            $('#talkDiv').hide();
+            $('#organization').hide();
+            $('#attachments').hide();
+            $('#tickets').hide();
+            $('#comments').hide();
+            $('#users').hide();
+            $('.clsfirstCol').text('Talk View');
+            $('.clsLastCol').text('Talk Type');
+            $('#orgSearchInput').hide();
+            $('#orgDateInput').hide();
+            $('.clstablerow').hide();
+            $('#templates').hide();
+        } else if (para == 'clscontinueActivation') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').hide();
+            $('#users').hide();
+            $('#tickets').show();
+            $('#comments').hide();
+            $('#ticketView').hide();
+            $('#ticketDate').hide();
+            $('#organization').hide();
+            $('#ticketSearch').hide();
+            $('#talkDiv').hide();
+            $('#attachments').hide();
+            $('.clsSupport').hide();
+            $('.activation').hide();
+            $('.clscontinueActivation').show();
+        } else if (para == 'displaySupport') {
+            $('#organizationTime').hide();
+            $('#ticketsTime').hide();
+            $('#about').hide();
+            $('#subscription').hide();
+            $('#saved_exports').hide();
+            $('#addTemplateExport').hide();
+            $('#templates').hide();
+            $('#settings').hide();
+            $('#users').hide();
+            $('#tickets').show();
+            $('#comments').hide();
+            $('#ticketView').show();
+            $('#ticketDate').hide();
+            $('#organization').hide();
+            $('#ticketSearch').hide();
+            $('#talkDiv').hide();
+            $('#attachments').hide();
+            $('.clsSupport').show();
+            $('.activation').hide();
+            $('.clscontinueActivation').hide();
+            $('body').css('background', 'white');
+
+        }
+    }
+    var expanded = false;
+
+    function showCheckboxes() {
+        var checkboxes = document.getElementById("checkboxes");
+        if (!expanded) {
+            checkboxes.style.display = "block";
+            expanded = true;
+        } else {
+            checkboxes.style.display = "none";
+            expanded = false;
+        }
+    }
+    document.getElementById('flexCheckIndeterminate').addEventListener('click', e => {
+        document.querySelectorAll('.form-check-input').forEach(checkbox => {
+            checkbox.checked = e.target.checked
+        })
+
+
+        function myFunction() {
+          document.getElementById("clstablerow").deleteRow(0);
+        }
+    })
+
+    //function checkSelections(){
+    //    $('#multiSelectDropdown').show();
+    //}
+
+
+</script>
+<script>
+    var arr = [];
+    // Function to add a row to the table
+    $('#multiSelectDropdown2 input[type="checkbox"]').change(function() {
+        var isChecked = $(this).is(':checked');
+        var value = $(this).val();
+        if (isChecked) {
+            addRow(value);
+        } else {
+            deleteRow(value);
+        }
+    });
+
+    // Function to add a row to the table
+    function addRow(value) {
+        arr.push(value); // Add value to the array
+        var newRow = '<tr data-value="' + value + '">' +
+            '<td><div class="form-check"><input class="form-check-input" type="checkbox" value="' + value + '"></div></td>' +
+            '<td>' + value + '</td>' +
+            '<td class="select_format_ticket">CSV</td>' +
+            '<td>Ticket</td>' +
+            '<td><i class="fa fa-trash" aria-hidden="true" onclick="deleteRow(\'' + value + '\')"></i></td>' +
+            '</tr>';
+        $('#ticketviewTable tbody').append(newRow);
+    }
+
+    // Function to delete the row corresponding to the checkbox
+    function deleteRow(value) {
+        var index = arr.indexOf(value); // Find index of value in array
+        if (index !== -1) {
+            arr.splice(index, 1); // Remove value from array
+        }
+
+        // Remove the row
+        $('#ticketviewTable tbody').find('tr[data-value="' + value + '"]').remove();
+        // Uncheck the corresponding checkbox
+        $('#multiSelectDropdown2 input[value="' + value + '"]').prop('checked', false);
+    }
+    showLoader();
+</script>
+
+</html>
