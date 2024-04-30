@@ -448,7 +448,7 @@
 
         .text-center {
             position: absolute;
-            bottom: 60px;
+            bottom: 16px;
             /* Adjusted from bottom */
             left: 0;
             right: 0;
@@ -600,9 +600,6 @@
                     </div>
                     <input type="hidden" name="plan" class="form-control" id="plan"
                                    placeholder="plan" value="free plan">
-<!--                    <button id="continueActivation" onclick="funClick('displaySupport')" type="submit"-->
-<!--                            class="btn btn-primary">Continue Activation-->
-<!--                    </button>-->
                     <p id="alert_msg"
                        style="font-size: 25px; margin-left: 10px; color:#17026e;"></p>
                     <button type="submit" style="margin-left: 10px;" class="btn btn-primary">Continue Activation
@@ -856,15 +853,6 @@
         <div class="col-lg-3 col-sm-6">
             <h3>Ticket Export</h3>
         </div>
-
-        <!--        <div class="col-lg-2 col-sm-6 selectdiv">-->
-        <!--            <select class="form-select" aria-label="Default select example" id="attachmentView">-->
-        <!--                <option selected>Select View</option>-->
-        <!--                <option value="1">All Comments</option>-->
-        <!--                <option value="2">Resolved Comments</option>-->
-        <!--                <option value="3">Pending Comments</option>-->
-        <!--            </select>-->
-        <!--        </div>-->
         <div class="col-lg-2 col-sm-6 selectdiv">
             <select class="form-select" aria-label="Default select example" id="templateSelectTime"
                     onchange="checkSelectionsTime()">
@@ -1710,7 +1698,7 @@
                 <div id="freePlan" class="card h-100 plan-card"
                      style="border-radius: 15px; border: none; background-color: #f7f7f7; margin-inline: 2px;">
                     <p class="text-light"
-                       style="font-size: 10px; margin: auto; padding: 4px; margin-top: -10px; background-color: #2995a8; width: max-content; display: none;">
+                       style="font-size: 10px; margin: auto; padding: 4px; margin-top: -10px; background-color: #dc8389; width: max-content; display: none;">
                         Current Plan
                     </p>
                     <div class="card-body sub-text-center" style="color: #17494d;">
@@ -1740,7 +1728,7 @@
                 <div id="SilverPlan" class="card h-100 plan-card"
                      style="border-radius: 15px; border: none; background-color: #f7f7f7; margin-inline: 2px;">
                     <p class="text-light"
-                       style="font-size: 10px; margin: auto; padding: 4px; margin-top: -10px; background-color: #2995a8; width: max-content; display: none;">
+                       style="font-size: 10px; margin: auto; padding: 4px; margin-top: -10px; background-color: #dc8389; width: max-content; display: none;">
                         Current Plan
                     </p>
                     <div class="card-body sub-text-center" style="color: #17494d;">
@@ -1771,7 +1759,7 @@
                 <div id="GoldPlan" class="card h-100 plan-card"
                      style="border-radius: 15px; border: none; background-color: #f7f7f7; margin-inline: 2px;">
                     <p class="text-light"
-                       style="font-size: 10px; margin: auto; padding: 4px; margin-top: -10px; background-color: #2995a8; width: max-content; display: none;">
+                       style="font-size: 10px; margin: auto; padding: 4px; margin-top: -10px; background-color: #dc8389; width: max-content; display: none;">
                         Current Plan
                     </p>
                     <div class="card-body sub-text-center" style="color: #17494d;">
@@ -1851,8 +1839,6 @@
 <script src="js/ticket/attachments.js"></script>
 <script src="js/ticket/calls_legs.js"></script>
 
-<!--<script src="js/user/search_based_users.js"></script>-->
-<!--<script src="js/comments/time_based_comments.js"></script>-->
 <script>
     $(document).ready(function () {
         $('.clsSupport').hide();
@@ -2298,14 +2284,10 @@
         }
     })
 
-    //function checkSelections(){
-    //    $('#multiSelectDropdown').show();
-    //}
-
 
 </script>
 <script>
-    var arr = [];
+    var arr = ['ticket'];
     // Function to add a row to the table
     $('#multiSelectDropdown2 input[type="checkbox"]').change(function() {
         var isChecked = $(this).is(':checked');
@@ -2342,7 +2324,7 @@
         // Uncheck the corresponding checkbox
         $('#multiSelectDropdown2 input[value="' + value + '"]').prop('checked', false);
     }
-<!--    showLoader();-->
+    showLoader();
 </script>
 
 </html>

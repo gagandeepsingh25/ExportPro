@@ -24,7 +24,6 @@ async function SearchLegsInfo(t_start, t_end) {
         const data = await client.request(settings);
         Updated_Array = data['legs'];
     } catch (error) {
-        console.error('Error fetching legs info:---', error);
     }
     return Updated_Array;
 }
@@ -42,7 +41,6 @@ async function SearchCallsInfo(t_start, t_end) {
         const data = await client.request(settings);
         Updated_Array = data['calls'];
     } catch (error) {
-        console.error('Error fetching calls info:---', error);
     }
     return Updated_Array;
 }
@@ -108,7 +106,6 @@ async function createLegsContent(legs_api_data, calls_api_data) {
             }
         }
     } catch (error) {
-        console.error('Error in create legs Content function:', error);
     }
 }
 
@@ -133,7 +130,6 @@ document.getElementById('time_legs_export_Button').addEventListener('click', asy
         await createLegsContent(legs_data, calls_data);
     } catch (error) {
         hideLoader();
-        console.error('Error fetching onclick time based legs export button:', error);
     }
 });
 
@@ -149,7 +145,6 @@ function talk_convertArrayOfObjectsToCSV(ticketArray) {
     try {
         // Check if ticketArray is defined and not empty
         if (!ticketArray || ticketArray.length === 0) {
-            console.error('Array is empty or undefined');
             return 'No data available';
         }
 
@@ -164,7 +159,6 @@ function talk_convertArrayOfObjectsToCSV(ticketArray) {
 
         return header + csv.join('');
     } catch (error) {
-        console.error('Error converting array to CSV:', error);
         return '';
     }
 }

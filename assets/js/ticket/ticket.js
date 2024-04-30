@@ -44,7 +44,6 @@ fetchData().then((data) => {
                     });
                     return response;
                 } catch (error) {
-                    console.error(error);
                     return {};
                 }
             };
@@ -76,72 +75,11 @@ fetchData().then((data) => {
             }
         }
     }).catch((error) => {
-        console.error("Error:", error);
     });
     checkUserPresence();
 }).catch((error) => {
-  console.error('Error:', error);
 });
 
-////********************************************************************************************************************
-// Add event listener for blur event on the email field
-//var eValidate = false;
-//document.getElementById('emailAddress').addEventListener('blur', function() {
-//    // Validate the email address
-//    var userEmail = this.value;
-//    if (userEmail !== '') {
-//        if (!validateEmail(userEmail) || userEmail.toLowerCase() !== username) {
-//            // Display validation message
-//            var validationMessage = document.getElementById("validationMessage");
-//            validationMessage.innerHTML = "Email does not belong to agent";
-//            validationMessage.style.color = "red";
-//            eValidate = false;
-//        } else {
-//            // Clear validation message if email is valid
-//            var validationMessage = document.getElementById("validationMessage");
-//            validationMessage.innerHTML = "";
-//            eValidate = true;
-//        }
-//    }
-//});
-//
-//// Function to validate email address
-//function validateEmail(email) {
-//    var re = /\S+@\S+\.\S+/;
-//    return re.test(email);
-//}
-////*************************************************************************************************************
-// // Add event listener for blur event on the subdomain field
-//var dValidate = false;
-//document.getElementById('subdomains').addEventListener('blur', function() {
-//    var userDomain = this.value.trim();
-//    if (userDomain !== '') {
-//        if (userDomain.toLowerCase() !== subdomain.toLowerCase()) {
-//            var validationMessage = document.getElementById("DomainValidationMessage");
-//            validationMessage.innerHTML = "Subdomain does not belong to agent";
-//            validationMessage.style.color = "red";
-//            dValidate = false;
-//        } else {
-//            var validationMessage = document.getElementById("DomainValidationMessage");
-//            validationMessage.innerHTML = "";
-//            dValidate = true;
-//        }
-//    }
-//});
-//
-//// Add event listener for click event on the checkbox
-//document.getElementById('radio_subdomains').addEventListener('click', function() {
-//    if (this.checked) {
-//        document.getElementById('subdomains').value = subdomain;
-//        var validationMessage = document.getElementById("DomainValidationMessage");
-//        validationMessage.innerHTML = "";
-//        dValidate = true;
-//    } else {
-//        document.getElementById('subdomains').value = "";
-//        dValidate = false;
-//    }
-//});
-//
 ////*************************************************************************************************************
 // Function to fetch the API key from the provided API endpoint
 async function fetchApiKey() {
@@ -162,10 +100,8 @@ async function fetchApiKey() {
             // Use the API key or store it securely
             return main;
         } else {
-            console.error('Failed to fetch API key:', response.status, response.statusText);
         }
     } catch (error) {
-        console.error('Error fetching API key:', error);
     }
 }
 
@@ -182,29 +118,20 @@ var supportNav = document.getElementById('navItems');
 //
 var free = document.querySelectorAll(".free-class");
 var silver = document.querySelectorAll(".silver-class");
-//var talkDiv = document.getElementById("talkDiv");
 
 // Function to hide activation button
 function hideActivationButton() {
     activationButton.style.display = 'none';
-//    activationTab.style.display = 'none';
 }
 
 // Function to show activation button
 function showActivationButton() {
     activationButton.style.display = 'block';
-//    activationTab.style.display = 'block';
 }
 
 // Function to handle form submission
 function handleFormSubmit(event) {
     event.preventDefault();
-//    if (!eValidate) {
-//        return;
-//    }
-//    if (!dValidate) {
-//        return;
-//    }
     showLoader(); // Prevent the default form submission behavior
 
     var form = event.target; // Get the form element
@@ -247,7 +174,6 @@ function handleFormSubmit(event) {
         }
     })
     .catch(error => {
-        console.error('Error:', error);
     });
 }
 // Add event listener for form submission
@@ -282,13 +208,12 @@ function checkUserPresence() {
 
                     var silverPlan = document.getElementById('professional_Plan');
                     silverPlan.querySelector('.text-light').style.display = 'block';
-                    silverPlan.style.border = '2px solid #2995a8';
+                    silverPlan.style.border = '2px solid #dc8389';
                     silverPlan.style.borderRadius = '15px';
                     silverPlan.querySelector('.btn').style.display = 'none';
 
                     document.getElementById("free-tem-plan").removeAttribute("onclick");
 
-//
                     silver.forEach(function(element) {
                         element.classList.add("disabled");
                     });
@@ -297,13 +222,15 @@ function checkUserPresence() {
 
                     var goldPlan = document.getElementById('enterprise_Plan');
                     goldPlan.querySelector('.text-light').style.display = 'block';
-                    goldPlan.style.border = '2px solid #2995a8';
+                    goldPlan.style.border = '2px solid #dc8389';
                     goldPlan.style.borderRadius = '15px';
                     goldPlan.querySelector('.btn').style.display = 'none';
                }else{
+                    $('#multiSelectDropdown').addClass("disabled");
+
                     var freePlan = document.getElementById('free_Plan');
                     freePlan.querySelector('.text-light').style.display = 'block';
-                    freePlan.style.border = '2px solid #2995a8';
+                    freePlan.style.border = '2px solid #dc8389';
                     freePlan.style.borderRadius = '15px';
                     freePlan.querySelector('.btn').style.display = 'none';
 
@@ -325,7 +252,6 @@ function checkUserPresence() {
             hideLoader();
         })
         .catch(error => {
-            console.error('Error:', error.message);
             showActivationButton();
             hideLoader();
         });
@@ -333,9 +259,10 @@ function checkUserPresence() {
 }
 
 // ******************************************* view based tickets START********************************************
+var ticket_arr = ['id', 'requester_id', 'submitter_id', 'assignee_id', 'brand_id', 'custom_status_id', 'group_id', 'ticket_form_id', 'organization_id', 'type', 'status', 'subject', 'result_type', 'raw_subject', 'is_public', 'created_at', 'updated_at', 'allow_attachments', 'url'];
 var ticket_api_data = [];
 var selected_template = 'CSV1';
-var selectedValue_ticket = 'All unsolved tickets';
+var selectedValue_ticket = '';
 
 async function checkSelections_selectView(){
     $('#multiSelectDropdown').show();
@@ -359,7 +286,6 @@ async function checkSelections() {
 async function ticketInfo(selectedValue_ticket) {
     try {
         var Updated_tickets_Array = [];
-        //var url = `${zendesk_domain}/api/v2/tickets.json?${selectedValue_ticket}`;
         if('All unsolved tickets' == selectedValue_ticket){
             var url = `${zendesk_domain}/api/v2/search.json?query=type:ticket status<solved`;
         }else if('Your unsolved tickets' == selectedValue_ticket){
@@ -375,6 +301,11 @@ async function ticketInfo(selectedValue_ticket) {
         }else{
             var url = `${zendesk_domain}/api/v2/tickets.json`;
         }
+
+        // Adding a delay of 2 seconds
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+
         var settings = {
             url: url,
             type: 'GET',
@@ -382,7 +313,6 @@ async function ticketInfo(selectedValue_ticket) {
         };
         const data = await client.request(settings);
 
-//        ticketsArray = data['tickets'];
         ticketsArray = data['results'];
         if (ticketsArray.length > 0) {
             for (var i = 0; i < ticketsArray.length; i++) {
@@ -410,7 +340,6 @@ async function ticketInfo(selectedValue_ticket) {
             // Perform actions when ticketsArray is empty
         }
     } catch (error) {
-        console.error('Error fetching ticket info:---', error);
     }
     return Updated_tickets_Array;
 }
@@ -444,7 +373,6 @@ function fetchRequesterData(par_dict) {
                     });
                     return response;
                 } catch (error) {
-                    console.error(error);
                     return {};
                 }
             };
@@ -545,127 +473,139 @@ async function createContent(ticket_api_data, arr) {
         for (var i = 0; i < ticket_api_data.length; i++) {
             var ticket = ticket_api_data[i];
 
-//            var count = await commentCount(ticket['id']);
-//            ticket['count'] = count
-
             // ***************************************************
             var selectedFieldsObject = {};
             // Export Ticket
             for (var j = 0; j < arr.length; j++) {
                 try{
                     var field = arr[j];
-//                    if (field == 'ticket' && field !== 'requester' && field !== 'submitter' &&
-//                    field !== 'assignee' && field !== 'groups' && field !== 'organization' &&
-//                    field !== 'brands' && field !== 'metric_set' && field !== 'ticket_forms'
-//                    && field !== 'custom_statuses') {
-//                            Object.keys(ticket).forEach(key => {
-//                                if (key === 'url' || key === 'id' || key === 'external_id' || key === 'created_at' || key === 'updated_at' || key === 'type' || key === 'priority' || key === 'status') {
-//                                    selectedFieldsObject['ticket_' + key] = ticket[key];
-//                                }else if(key === 'description'){
-//                                    selectedFieldsObject['ticket_' + key] = '"' + ticket[key].toString() + '"';
-//                                }else if(key === 'subject'){
-//                                    selectedFieldsObject['ticket_' + key] = '"' + ticket[key].toString() + '"';
-//                                }
-//                            });
-//                    }
-//                    else if (field == 'requester') {
-                    if (field == 'requester') {
-                            Object.keys(ticket['requester']['user']).forEach(key => {
-                                let value = ticket['requester']['user'][key];
-                                if (typeof value === 'object') {
-//                                    selectedFieldsObject['requester_' + key] = JSON.stringify(value);
+                    if (userPlan == 'price_1P90mvFwJbrWuwgF3gZ6YX5R' || userPlan == 'price_1P90mvFwJbrWuwgFYaifSdJ5'){
+                        if (field == 'ticket'){
+                            ticket_arr.forEach(tick => {
+                                var value = ticket[tick];
+                                if (value === undefined || value === null) {
+                                    selectedFieldsObject['ticket_' + tick] = '';
                                 } else {
-                                    selectedFieldsObject['requester_' + key] = '"' + value.toString() + '"';
+                                    selectedFieldsObject['ticket_' + tick] = '"' + value.toString() + '"';
                                 }
                             });
-                    }else if (field == 'submitter') {
-                            Object.keys(ticket['submitter']['user']).forEach(key => {
-                                let value = ticket['submitter']['user'][key];
-                                if (typeof value === 'object') {
-//                                    selectedFieldsObject['submitter_' + key] = JSON.stringify(value);
-                                } else {
-                                    selectedFieldsObject['submitter_' + key] = '"' + value.toString() + '"';
+                        }else if (field == 'requester') {
+                                Object.keys(ticket['requester']['user']).forEach(key => {
+                                    let value = ticket['requester']['user'][key];
+                                    if (typeof value === 'object') {
+                                    } else {
+                                        selectedFieldsObject['requester_' + key] = '"' + value.toString() + '"';
+                                    }
+                                });
+                        }else if (field == 'submitter') {
+                                Object.keys(ticket['submitter']['user']).forEach(key => {
+                                    let value = ticket['submitter']['user'][key];
+                                    if (typeof value === 'object') {
+                                    } else {
+                                        selectedFieldsObject['submitter_' + key] = '"' + value.toString() + '"';
+                                    }
+                                });
+                        }else if (field == 'assignee') {
+                                Object.keys(ticket['assignee']['user']).forEach(key => {
+                                    let value = ticket['assignee']['user'][key];
+                                    if (typeof value === 'object') {
+                                    } else {
+                                        selectedFieldsObject['assignee_' + key] = '"' + value.toString() + '"';
+                                    }
+                                });
+                        }else if (field == 'groups') {
+                                Object.keys(ticket['groups']['group']).forEach(key => {
+                                    let value = ticket['groups']['group'][key];
+                                    if (typeof value === 'object') {
+                                    } else {
+                                        if (value === undefined || value === null) {
+                                            selectedFieldsObject['group_' + key] = '';
+                                        }else {
+                                            selectedFieldsObject['group_' + key] = '"' + value.toString() + '"';
+                                        }
+                                    }
+                                });
+                        }else if (field == 'organization') {
+                                if (typeof ticket['organization']['organization'] === 'object' && ticket['organization']['organization'] !== null) {
+                                    Object.keys(ticket['organization']['organization']).forEach(key => {
+                                        let value = ticket['organization']['organization'][key];
+                                        if (typeof value === 'object') {
+                                        } else {
+                                            if (value === undefined || value === null) {
+                                                selectedFieldsObject['organization_' + tick] = '';
+                                            }else {
+                                                selectedFieldsObject['organization_' + key] = '"' + value.toString() + '"';
+                                            }
+                                        }
+                                    });
                                 }
-                            });
-                    }else if (field == 'assignee') {
-                            Object.keys(ticket['assignee']['user']).forEach(key => {
-                                let value = ticket['assignee']['user'][key];
-                                if (typeof value === 'object') {
-//                                    selectedFieldsObject['assignee_' + key] = JSON.stringify(value);
-                                } else {
-                                    selectedFieldsObject['assignee_' + key] = '"' + value.toString() + '"';
-                                }
-                            });
-                    }else if (field == 'groups') {
-                            Object.keys(ticket['groups']['group']).forEach(key => {
-                                let value = ticket['groups']['group'][key];
-                                if (typeof value === 'object') {
-//                                    selectedFieldsObject['group_' + key] = JSON.stringify(value);
-                                } else {
-                                    selectedFieldsObject['group_' + key] = '"' + value.toString() + '"';
-                                }
-                            });
-                    }else if (field == 'organization') {
-                            Object.keys(ticket['organization']['organization']).forEach(key => {
-                                let value = ticket['organization']['organization'][key];
-                                if (typeof value === 'object') {
-//                                    selectedFieldsObject['organization_' + key] = JSON.stringify(value);
-                                } else {
-                                    selectedFieldsObject['organization_' + key] = '"' + value.toString() + '"';
-                                }
-                            });
-                    }else if (field == 'brands') {
-                            Object.keys(ticket['brands']['brand']).forEach(key => {
-                                let value = ticket['brands']['brand'][key];
-                                if (typeof value === 'object') {
-//                                    selectedFieldsObject['brand_' + key] = JSON.stringify(value);
-                                } else {
-                                    selectedFieldsObject['brand_' + key] = '"' + value.toString() + '"';
-                                }
-                            });
-                    }else if (field == 'metric_set') {
-                            Object.keys(ticket['metric_set']['ticket_metric']).forEach(key => {
-                                let value = ticket['metric_set']['ticket_metric'][key];
-                                if (typeof value === 'object') {
-//                                    selectedFieldsObject['metric_' + key] = JSON.stringify(value);
-                                } else {
-                                    selectedFieldsObject['metric_' + key] = '"' + value.toString() + '"';
-                                }
-                            });
-                    }else if (field == 'ticket_forms') {
-                            Object.keys(ticket['ticket_forms']['ticket_form']).forEach(key => {
-                                let value = ticket['ticket_forms']['ticket_form'][key];
-                                if (typeof value === 'object') {
-//                                    selectedFieldsObject['form_' + key] = JSON.stringify(value);
-                                } else {
-                                    selectedFieldsObject['form_' + key] = '"' + value.toString() + '"';
-                                }
-                            });
-                    }else if (field == 'custom_statuses') {
-                            Object.keys(ticket['custom_statuses']['custom_status']).forEach(key => {
-                                let value = ticket['custom_statuses']['custom_status'][key];
-                                if (typeof value === 'object') {
-//                                    selectedFieldsObject['custom_' + key] = JSON.stringify(value);
-                                } else {
-                                    selectedFieldsObject['custom_' + key] = '"' + value.toString() + '"';
-                                }
-                            });
-                    }else {
-                        selectedFieldsObject = {};
-                    }
-                    // Export Ticket Detail
-                    Object.keys(ticket).forEach(key => {
-                        if (key === 'url' || key === 'id' || key === 'external_id' || key === 'created_at' || key === 'updated_at' || key === 'type' || key === 'priority' || key === 'status') {
-                            selectedFieldsObject['ticket_' + key] = ticket[key];
-                        }else if(key === 'description'){
-                            selectedFieldsObject['ticket_' + key] = '"' + ticket[key].toString() + '"';
-                        }else if(key === 'subject'){
-                            selectedFieldsObject['ticket_' + key] = '"' + ticket[key].toString() + '"';
+                        }else if (field == 'brands') {
+                                Object.keys(ticket['brands']['brand']).forEach(key => {
+                                    let value = ticket['brands']['brand'][key];
+                                    if (typeof value === 'object') {
+                                    } else {
+                                        if (value === undefined || value === null) {
+                                            selectedFieldsObject['brand_' + key] = '';
+                                        }else {
+                                            selectedFieldsObject['brand_' + key] = '"' + value.toString() + '"';
+                                        }
+                                    }
+                                });
+                        }else if (field == 'metric_set') {
+                                Object.keys(ticket['metric_set']['ticket_metric']).forEach(key => {
+                                    let value = ticket['metric_set']['ticket_metric'][key];
+                                    if (typeof value === 'object') {
+                                    } else {
+                                        if (value === undefined || value === null) {
+                                            selectedFieldsObject['metric_' + key] = '';
+                                        }else {
+                                            selectedFieldsObject['metric_' + key] = '"' + value.toString() + '"';
+                                        }
+                                    }
+                                });
+                        }else if (field == 'ticket_forms') {
+                                Object.keys(ticket['ticket_forms']['ticket_form']).forEach(key => {
+                                    let value = ticket['ticket_forms']['ticket_form'][key];
+                                    if (typeof value === 'object') {
+                                    } else {
+                                        if (value === undefined || value === null) {
+                                            selectedFieldsObject['form_' + key] = '';
+                                        }else {
+                                            selectedFieldsObject['form_' + key] = '"' + value.toString() + '"';
+                                        }
+                                    }
+                                });
+                        }else if (field == 'custom_statuses') {
+                                Object.keys(ticket['custom_statuses']['custom_status']).forEach(key => {
+                                    let value = ticket['custom_statuses']['custom_status'][key];
+                                    if (typeof value === 'object') {
+                                    } else {
+                                        if (value === undefined || value === null) {
+                                            selectedFieldsObject['custom_' + key] = '';
+                                        }else {
+                                            selectedFieldsObject['custom_' + key] = '"' + value.toString() + '"';
+                                        }
+                                    }
+                                });
+                        }else {
+                            selectedFieldsObject = {};
                         }
-                    });
+                    }else{
+                        if (field == 'ticket'){
+                            var ticket_arr_free = ['id', 'requester_id', 'submitter_id', 'assignee_id', 'brand_id',
+                            'group_id', 'organization_id', 'status', 'subject', 'created_at', 'updated_at', 'url'];
+                            ticket_arr_free.forEach(tick => {
+                                var value = ticket[tick];
+                                if (value === undefined || value === null) {
+                                    selectedFieldsObject['ticket_' + tick] = '';
+                                } else {
+                                    selectedFieldsObject['ticket_' + tick] = '"' + value.toString() + '"';
+                                }
+                            });
+                        }
+                    }
 
                 }catch (error) {
-                    console.error('Error in Ticket fields:', error);
                     continue
                 }
             }
@@ -697,7 +637,6 @@ async function createContent(ticket_api_data, arr) {
             }
         }
     } catch (error) {
-        console.error('Error in create Content function:', error);
     }
 }
 
@@ -732,7 +671,6 @@ function convertArrayOfObjectsToCSV(ticketArray) {
      try {
         // Check if ticketArray is defined and not empty
         if (!ticketArray || ticketArray.length === 0) {
-            console.error('Array is empty or undefined');
             return 'No data available';
         }
 
@@ -747,7 +685,6 @@ function convertArrayOfObjectsToCSV(ticketArray) {
 
         return header + csv.join('');
     } catch (error) {
-        console.error('Error converting array to CSV:', error);
         return '';
     }
 }
@@ -766,7 +703,6 @@ async function commentCount(id) {
         val = data['count']['value'];
         return val;
     } catch (error) {
-        console.error('Error in comment Count:', error);
         return 0;
     }
 }
@@ -776,13 +712,17 @@ document.getElementById('exportButton').addEventListener('click', async function
     try {
         // *********************** ticket based on view ********************************
         // Check if options are selected in both dropdowns
-        if (selectedValue_ticket && selected_template) {
+        if (selectedValue_ticket != '' && selected_template) {
             showLoader();
             // Ticket data
             ticket_api_data = await ticketInfo(selectedValue_ticket);
+
+            // create csv content
+            await createContent(ticket_api_data, arr);
         }else{
             hideLoader();
         }
+
          // *********************** ticket based on search ********************************
         var searchTicket = document.getElementById("ticketSearch").value;;
         var search_query = searchTicket;
@@ -791,45 +731,37 @@ document.getElementById('exportButton').addEventListener('click', async function
             showLoader();
             // Ticket data
             ticket_api_data = await searchTicketsData(search_query);
-            arr = ['requester', 'submitter', 'assignee', 'groups', 'organization', 'metric_set', 'ticket_forms', 'custom_statuses', 'custom_statuses'];
+            arr = ['ticket', 'requester', 'submitter', 'assignee', 'groups', 'organization', 'metric_set', 'ticket_forms', 'custom_statuses', 'custom_statuses'];
+
+            // create csv content
+            await createContent(ticket_api_data, arr);
         }else{
             hideLoader();
         }
 
-        // create csv content
-        await createContent(ticket_api_data, arr);
     } catch (error) {
         hideLoader();
-        console.error('Error fetching onclick export button:', error);
     }
 });
 
 // Add an event listener to the "Export" button
 document.getElementById('exportButton_TimeBasedTicket').addEventListener('click', async function () {
     try {
-    //    var t_start = ticketformatDateToUnixTimestamp(start_time);
-    //    var t_end = ticketformatDateToUnixTimestamp(end_time);
-
-//        const t_start = Math.floor(new Date(start_time).getTime() / 1000);
-//        const t_end = Math.floor(new Date(end_time + ' 23:59:59').getTime() / 1000);
-
         if (selected_template){
-//            if(t_start && t_end){
             if(start_time && end_time){
                 showLoader();
                 ticket_api_data = await SearchTicketInfo(start_time, end_time)
-//                ticket_api_data = await SearchTicketInfo(t_start, t_end)
-                arr = ['requester', 'submitter', 'assignee', 'groups', 'organization', 'metric_set', 'ticket_forms', 'custom_statuses', 'custom_statuses'];
+                arr = ['ticket', 'requester', 'submitter', 'assignee', 'groups', 'organization', 'metric_set', 'ticket_forms', 'custom_statuses', 'custom_statuses'];
+
+                await createContent(ticket_api_data, arr);
             }else{
                 hideLoader();
             }
         }else{
             hideLoader();
         }
-        await createContent(ticket_api_data, arr);
     } catch (error) {
         hideLoader();
-        console.error('Error fetching onclick export button:', error);
     }
 });
 
@@ -842,7 +774,6 @@ async function searchTicketsData(query) {
     showLoader();
 
     if (!query) {
-        console.error('Invalid search query. Please provide a valid query.');
         hideLoader();
         return Promise.reject('Invalid search query.');
     }
@@ -887,14 +818,12 @@ async function searchTicketsData(query) {
                     Updated_Array.push(ticket);
 
                  }catch (error) {
-                    console.error('Error processing ticket data:', error);
                 }
             }
         }
         return Updated_Array;
     } catch (error) {
         hideLoader();
-        console.error('Error fetching search users data:', error);
         return Promise.reject(error); // Reject with the error
     }
 }
@@ -924,14 +853,12 @@ async function SearchTicketInfo(t_start, t_end) {
     try {
         var Updated_Array = [];
         var url = `${zendesk_domain}/api/v2/search.json?query=type:ticket&created>${t_start}&created<${t_end}`;
-//        var url = `${zendesk_domain}/api/v2/incremental/tickets.json?start_time=${t_start}&end_time=${t_end}`;
         var settings = {
             url: url,
             type: 'GET',
             dataType: 'json',
         };
         const data = await client.request(settings);
-//        ticketsArray = data['tickets'];
         ticketsArray = data['results'];
         if (ticketsArray.length > 0) {
             for (var i = 0; i < ticketsArray.length; i++) {
@@ -957,7 +884,6 @@ async function SearchTicketInfo(t_start, t_end) {
             }
         }
     } catch (error) {
-        console.error('Error fetching comments ticket info:---', error);
     }
     return Updated_Array;
 }
@@ -1007,7 +933,6 @@ function convertArrayOfObjectsToXML(ticketArray) {
         xml += '</tickets>';
         return xml;
     } catch (error) {
-        console.error('Error converting array to XML:', error);
         return '';
     }
 }

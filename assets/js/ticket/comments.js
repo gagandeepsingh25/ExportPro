@@ -15,7 +15,6 @@ async function commentInfo(start, end) {
     try {
         var Updated_Array = [];
         var url = `${zendesk_domain}/api/v2/search.json?query=type:ticket&created>${start}&created<${end}`;
-//        var url = `${zendesk_domain}/api/v2/incremental/tickets.json?start_time=${start}&end_time=${end}`;
         var settings = {
             url: url,
             type: 'GET',
@@ -23,7 +22,6 @@ async function commentInfo(start, end) {
         };
         const data = await client.request(settings);
         const ticketsArray = data['results'];
-//        const ticketsArray = data['tickets'];
 
         for (var i = 0; i < ticketsArray.length; i++) {
             var ticket = ticketsArray[i];
@@ -40,7 +38,6 @@ async function commentInfo(start, end) {
             Updated_Array.push(new_dict);
         }
     } catch (error) {
-        console.error('Error fetching comments ticket info:-', error);
     }
     return Updated_Array;
 }
@@ -57,7 +54,6 @@ async function fetchCommentData(id) {
         const Data = await client.request(settings);
         commentsData = Data['comments'];
     } catch (error) {
-        //console.error('Error fetching comments data info:', error);
     }
     return commentsData;
 }
@@ -74,7 +70,6 @@ async function fetchAuditsData(id) {
         const data = await client.request(settings);
         auditData = data['audits'];
     } catch (error) {
-        console.error('Error fetching audit data info:---', error);
     }
     return auditData;
 }
@@ -118,13 +113,6 @@ async function createCommentsContent(tickets_data) {
                                         selectedFieldsObject['longitude'] = '"' + value['system']['longitude'].toString() + '"';
                                     }
                                }
-//                               else if(key == 'events'){
-//                                    selectedFieldsObject['audit_id'] = '"' + value[0]['audit_id'].toString() + '"';
-//                                    selectedFieldsObject['author_id'] = '"' + value[0]['author_id'].toString() + '"';
-//                                    selectedFieldsObject['type'] = '"' + value[0]['type'].toString() + '"';
-//                                    selectedFieldsObject['body'] = '"' + value[0]['body'].toString() + '"';
-//                                    selectedFieldsObject['public'] = '"' + value[0]['public'].toString() + '"';
-//                               }
                            }else {
                                 selectedFieldsObject['Audit_' + key] = '"' + value.toString() + '"';
                            }
@@ -160,7 +148,6 @@ async function createCommentsContent(tickets_data) {
             }
         }
     } catch (error) {
-        console.error('Error in comment create Content function:', error);
     }
 }
 
@@ -168,15 +155,10 @@ async function createCommentsContent(tickets_data) {
 // Add an event listener to the "Export" button
 document.getElementById('comment_export_Button').addEventListener('click', async function () {
     try {
-
-//        var t_start = ticketformatDateToUnixTimestamp(start_time);
-//        var t_end = ticketformatDateToUnixTimestamp(end_time);
-
         if (c_selected_template) {
             if (start_time && end_time){
                 showLoader();
                 tickets_data = await commentInfo(start_time, end_time)
-    //            tickets_data = await commentInfo(t_start, t_end)
             }else{
                 hideLoader();
             }
@@ -184,7 +166,6 @@ document.getElementById('comment_export_Button').addEventListener('click', async
         await createCommentsContent(tickets_data);
     } catch (error) {
         hideLoader();
-        console.error('Error fetching onclick comments export button:', error);
     }
 });
 
@@ -217,7 +198,6 @@ function convertArrayOfObjectsToXML_comment(ticketArray) {
         xml += '</comments>';
         return xml;
     } catch (error) {
-        console.error('Error converting array to XML:', error);
         return '';
     }
 }

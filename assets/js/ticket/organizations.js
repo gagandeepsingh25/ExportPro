@@ -14,7 +14,6 @@ async function checkOrganizationSelections() {
 async function searchOrganizationData(query) {
     query = query.toString();
     if (!query) {
-        console.error('Invalid search query. Please provide a valid query.');
         return Promise.reject('Invalid search query.');
     }
 
@@ -27,27 +26,22 @@ async function searchOrganizationData(query) {
     var user_data = {};
     const url = `${zendesk_domain}/api/v2/search.json?query=type:organization name:${query}&sort_by=created_at&sort_order=asc`;
     try {
+        // Adding a time delay of 2 seconds
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
         const response = await client.request(url, {
             method: 'GET',
             headers: headers,
         });
         var o_d = [];
         o_d = response['results'];
-//        if (response && response.results.length) {
-//            const searchSelectMessage = $('#searchOrgSelectMessage');
-//            const lengthMessage = 'This view contains ' + response.results.length + ' organizations.';
-//            searchSelectMessage.text(lengthMessage).show();
-//        } else {
-//            const searchSelectMessage = $('#searchOrgSelectMessage');
-//            const lengthMessage = 'This view contains 0 organizations.';
-//            searchSelectMessage.text(lengthMessage).show();
-//        }
         return user_data = { 'org_data': o_d};
     } catch (error) {
-        console.error('Error fetching search users data:', error);
         return Promise.reject(error); // Reject with the error
     }
 }
+
+
 // Function to create a CSV file from selected fields
 async function createOrganizationContent(Search_Org_Data) {
     try {
@@ -95,7 +89,6 @@ async function createOrganizationContent(Search_Org_Data) {
             }
         }
     } catch (error) {
-        console.error('Error in org create Content function:', error);
     }
 }
 
@@ -117,7 +110,6 @@ document.getElementById('search_org_export_Button').addEventListener('click', as
         await createOrganizationContent(Search_Org_Data);
     } catch (error) {
         hideLoader();
-        console.error('Error fetching onclick search based Organization export button:', error);
     }
 });
 //**********************************************************************************************************
@@ -145,7 +137,6 @@ async function fetchTimeBasedOrganizationData(start, end) {
         const data = await client.request(settings);
         organizationsArray = data['organizations'];
     } catch (error) {
-        console.error('Error fetching org ticket info:---', error);
     }
     return organizationsArray;
 }
@@ -171,7 +162,6 @@ document.getElementById('time_org_export_Button').addEventListener('click', asyn
         await createOrganizationContent(Search_Org_Data);
     } catch (error) {
         hideLoader();
-        console.error('Error fetching onclick time based Organization export button:', error);
     }
 });
 
@@ -182,7 +172,6 @@ document.getElementById('time_org_export_Button').addEventListener('click', asyn
 function convertArrayOfObjectsToXML_org(ticketArray) {
     try {
         if (!ticketArray || ticketArray.length === 0) {
-            console.error('Array is empty or undefined');
             return '';
         }
 
@@ -206,11 +195,9 @@ function convertArrayOfObjectsToXML_org(ticketArray) {
         xml += '</organizations>';
         return xml;
     } catch (error) {
-        console.error('Error converting array to XML:', error);
         return '';
     }
 }
-
 
 function formatDateToUnixTimestamp(dateString) {
     var parts = dateString.split('/');

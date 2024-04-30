@@ -11,7 +11,6 @@ async function checkUserSelections() {
 async function searchUsersData(query) {
     query = query.toString();
     if (!query) {
-        console.error('Invalid search query. Please provide a valid query.');
         return Promise.reject('Invalid search query.');
     }
 
@@ -26,6 +25,9 @@ async function searchUsersData(query) {
     const url = `${zendesk_domain}/api/v2/search.json?query=type:user ${query}&sort_by=created_at&sort_order=asc`;
 
     try {
+        // Adding a time delay of 2 seconds (2000 milliseconds)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
         const response = await client.request(url, {
             method: 'GET',
             headers: headers,
@@ -33,75 +35,12 @@ async function searchUsersData(query) {
 
         var u_d = [];
         u_d = response['results'];
-
-//        if (response && response.results.length) {
-//            const searchSelectMessage = $('#userSelectMessage');
-//            const lengthMessage = 'This view contains ' + response.results.length + ' users.';
-//            searchSelectMessage.text(lengthMessage).show();
-//        } else {
-//            const searchSelectMessage = $('#userSelectMessage');
-//            const lengthMessage = 'This view contains 0 users.';
-//            searchSelectMessage.text(lengthMessage).show();
-//        }
-
-//        const userData = [];
-//        for (let i = 0; i < u_d.length; i++) {
-//            try {
-//                if ('organization_id' in u_d[i]) {
-//                    const org_id = u_d[i]['organization_id'];
-//                    if (org_id && org_id !== 'null' && org_id !== undefined) {
-//                        const orgUrl = `${zendesk_domain}/api/v2/organizations/${org_id}`;
-//                        const orgResponse = await fetch(orgUrl, {
-//                            method: 'GET',
-//                            headers: {
-//                                Authorization: auth,
-//                                'Content-Type': 'application/json',
-//                            },
-//                        });
-//                        const orgData = await orgResponse.json();
-//                        u_d[i]['organization_data'] = orgData.organization;
-//                    } else {
-//                        u_d[i]['organization_data'] = {};
-//                    }
-//                } else {
-//                    u_d[i]['organization_id'] = null;
-//                    u_d[i]['organization_data'] = {};
-//                }
-//
-//                if ('group_id' in u_d[i]) {
-//                    const grp_id = u_d[i]['group_id']; // Use u_d[i] instead of i
-//                    if (grp_id && grp_id !== 'null' && grp_id !== undefined) {
-//                        const groupUrl = `${zendesk_domain}/api/v2/groups/${grp_id}`;
-//                        const groupResponse = await fetch(groupUrl, {
-//                            method: 'GET',
-//                            headers: {
-//                                Authorization: auth,
-//                                'Content-Type': 'application/json',
-//                            },
-//                        });
-//                        const groupData = await groupResponse.json();
-//                        u_d[i]['group_data'] = groupData.group; // Use u_d[i] instead of i
-//                    } else {
-//                        u_d[i]['group_data'] = {};
-//                    }
-//                } else {
-//                    u_d[i]['group_id'] = null;
-//                    u_d[i]['group_data'] = {};
-//                }
-//                userData.push(i);
-//            } catch (error) {
-//                console.error('Error processing user data:', error);
-//            }
-//            user_data = { 'user_data': userData};
-//
-//            //user_data = { 'user_data': i};
-//        }
         return user_data = { 'user_data': u_d};
     } catch (error) {
-        console.error('Error fetching search users data:', error);
         return Promise.reject(error); // Reject with the error
     }
 }
+
 
 
 // Function to create a CSV file from selected fields
@@ -149,7 +88,6 @@ async function createUsersContent(search_users_data) {
             }
         }
     } catch (error) {
-        console.error('Error in users create Content function:', error);
     }
 }
 
@@ -172,7 +110,6 @@ document.getElementById('search_user_export_Button').addEventListener('click', a
         await createUsersContent(result_data);
     } catch (error) {
         hideLoader();
-        console.error('Error fetching onclick users export button:', error);
     }
 });
 //*********************************************************************************************************
@@ -203,7 +140,6 @@ function convertArrayOfObjectsToXML_user(ticketArray) {
         xml += '</users>';
         return xml;
     } catch (error) {
-        console.error('Error converting array to XML:', error);
         return '';
     }
 }
