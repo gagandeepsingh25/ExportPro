@@ -117,7 +117,6 @@ var supportNav = document.getElementById('navItems');
 
 //
 var free = document.querySelectorAll(".free-class");
-var silver = document.querySelectorAll(".silver-class");
 
 // Function to hide activation button
 function hideActivationButton() {
@@ -204,22 +203,7 @@ function checkUserPresence() {
                 hideActivationButton();
                 supportNav.style.display = 'block';
                userPlan = data.data.plan;
-               if (userPlan == 'price_1P90mvFwJbrWuwgF3gZ6YX5R'){ // silver plan
-
-                    var silverPlan = document.getElementById('professional_Plan');
-                    silverPlan.querySelector('.text-light').style.display = 'block';
-                    silverPlan.style.border = '2px solid #dc8389';
-                    silverPlan.style.borderRadius = '15px';
-                    silverPlan.querySelector('.btn').style.display = 'none';
-
-                    document.getElementById("free-tem-plan").removeAttribute("onclick");
-
-                    silver.forEach(function(element) {
-                        element.classList.add("disabled");
-                    });
-
-               }else if (userPlan == 'price_1P90mvFwJbrWuwgFYaifSdJ5'){ // gold plan
-
+               if (userPlan == 'price_1P90mvFwJbrWuwgF3gZ6YX5R'){ // gold plan
                     var goldPlan = document.getElementById('enterprise_Plan');
                     goldPlan.querySelector('.text-light').style.display = 'block';
                     goldPlan.style.border = '2px solid #dc8389';
@@ -479,7 +463,7 @@ async function createContent(ticket_api_data, arr) {
             for (var j = 0; j < arr.length; j++) {
                 try{
                     var field = arr[j];
-                    if (userPlan == 'price_1P90mvFwJbrWuwgF3gZ6YX5R' || userPlan == 'price_1P90mvFwJbrWuwgFYaifSdJ5'){
+                    if (userPlan == 'price_1P90mvFwJbrWuwgF3gZ6YX5R'){
                         if (field == 'ticket'){
                             ticket_arr.forEach(tick => {
                                 var value = ticket[tick];
