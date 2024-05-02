@@ -16,14 +16,12 @@ async function AttachCommentInfo(start, end) {
     try {
         var AttachmentData = [];
         var url = `${zendesk_domain}/api/v2/search.json?query=type:ticket&created>${start}&created<${end}`;
-//        var url = `${zendesk_domain}/api/v2/incremental/tickets.json?start_time=${start}&end_time=${end}`;
         var settings = {
             url: url,
             type: 'GET',
             dataType: 'json',
         };
         const data = await client.request(settings);
-//        const ticketsArray = data['tickets'];
         const ticketsArray = data['results'];
 
         if (ticketsArray.length){
@@ -53,12 +51,10 @@ async function AttachCommentInfo(start, end) {
                     }
                 }
                 else{
-                    console.error('ticket expire.')
                 }
             }
         }
     } catch (error) {
-        console.error('Error fetching comments ticket info:-', error);
     }
     return AttachmentData;
 }
@@ -84,7 +80,6 @@ async function createAttachmentContent(attachments_data) {
 
                 selectedFieldsArray.push(selectedFieldsObject);
             }catch (error) {
-                console.error('Error in selected field:', error);
             }
 
         }
@@ -114,7 +109,6 @@ async function createAttachmentContent(attachments_data) {
         }
 
     } catch (error) {
-        console.error('Error in attachment create Content function:', error);
     }
 }
 
@@ -139,7 +133,6 @@ document.getElementById('attachment_export_Button').addEventListener('click', as
         await createAttachmentContent(attachments_data);
     } catch (error) {
         hideLoader();
-        console.error('Error fetching onclick attachment export button:', error);
     }
 });
 
@@ -148,7 +141,6 @@ document.getElementById('attachment_export_Button').addEventListener('click', as
 function convertArrayOfObjectsToXML_attach(ticketArray) {
     try {
         if (!ticketArray || ticketArray.length === 0) {
-            console.error('Array is empty or undefined');
             return '';
         }
 
@@ -172,31 +164,12 @@ function convertArrayOfObjectsToXML_attach(ticketArray) {
         xml += '</attachments>';
         return xml;
     } catch (error) {
-        console.error('Error converting array to XML:', error);
         return '';
     }
 }
-
 
 function attach_formatDateToUnixTimestamp(dateString) {
     var parts = dateString.split('/');
     var formattedDate = new Date(parts[2], parts[0] - 1, parts[1]);
     return Math.floor(formattedDate.getTime() / (1000 * 60 * 60 * 24));
 }
-
-//async function AttachmentsData(id) {
-//    var AmentData = {};
-//    try {
-//        var url = `${zendesk_domain}/api/v2/attachments/${id}/`;
-//        var settings = {
-//            url: url,
-//            type: 'GET',
-//            dataType: 'json',
-//        };
-//        const Data = await client.request(settings);
-//        AmentData = Data['attachment'];
-//    } catch (error) {
-//        console.error('Error fetching attachment data info:-', error);
-//    }
-//    return AmentData;
-//}
