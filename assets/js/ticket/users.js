@@ -20,36 +20,24 @@ async function searchUsersData(query) {
         'Content-Type': 'application/json',
     };
 
+    var user_data = {};
+
     const url = `${zendesk_domain}/api/v2/search.json?query=type:user ${query}&sort_by=created_at&sort_order=asc`;
 
-    // Initialize timeout variables
-    let timeoutId;
-    const timeoutPromise = new Promise((resolve, reject) => {
-        timeoutId = setTimeout(() => {
-            reject(new Error('Request timed out'));
-        }, 5000); // Adjust the timeout duration as needed (e.g., 5000 milliseconds)
-    });
-
     try {
-        // Make the API request and race it against the timeout
-        const responsePromise = client.request(url, {
+        const response = await client.request(url, {
             method: 'GET',
             headers: headers,
         });
 
-        const response = await Promise.race([responsePromise, timeoutPromise]);
-
-        // Clear the timeout if the request succeeds
-        clearTimeout(timeoutId);
-
-        var u_d = response['results'];
-        return { 'user_data': u_d };
+        var u_d = [];
+        u_d = response['results'];
+        return user_data = { 'user_data': u_d};
     } catch (error) {
-        // Clear the timeout if an error occurs
-        clearTimeout(timeoutId);
-        return Promise.reject(error);
+        return Promise.reject(error); // Reject with the error
     }
 }
+
 
 
 // Function to create a CSV file from selected fields

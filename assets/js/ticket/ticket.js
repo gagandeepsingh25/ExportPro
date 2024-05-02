@@ -266,7 +266,6 @@ async function checkSelections() {
     return selected_template;
 }
 
-
 // FETCH TICKET DATA FROM API
 async function ticketInfo(selectedValue_ticket) {
     try {
@@ -287,63 +286,42 @@ async function ticketInfo(selectedValue_ticket) {
             var url = `${zendesk_domain}/api/v2/tickets.json`;
         }
 
-        // Adding a delay of 2 seconds
-        const timeoutPromise = new Promise(resolve => setTimeout(resolve, 2000));
+        var settings = {
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+        };
+        const data = await client.request(settings);
 
-        // Fetch data with timeout
-        const fetchDataPromise = new Promise(async (resolve, reject) => {
-            try {
-                const settings = {
-                    url: url,
-                      type: 'GET',
-                    dataType: 'json',
+        ticketsArray = data['results'];
+        if (ticketsArray.length > 0) {
+            for (var i = 0; i < ticketsArray.length; i++) {
+                var ticket = ticketsArray[i];
+                var par_dict =
+                    {'requester_id': ticket['requester_id'],
+                     'submitter_id': ticket['submitter_id'],
+                     'assignee_id': ticket['assignee_id'],
+                     'organization_id': ticket['organization_id'],
+                     'group_id': ticket['group_id'],
+                     'ticket_form_id': ticket['ticket_form_id'],
+                     'brand_id': ticket['brand_id'],
+                     'custom_status_id': ticket['custom_status_id'],
+                     'id': ticket["id"]
+                     };
+
+                var ApiData = await fetchRequesterData(par_dict);
+                ticket = {
+                    ...ticket,
+                    ...ApiData
                 };
-                const data = await client.request(settings);
-                resolve(data);
-            } catch (error) {
-                reject(error);
-            }
-        });
-
-        // Wait for either data or timeout, whichever comes first
-        const [data] = await Promise.race([fetchDataPromise, timeoutPromise]);
-
-        // If data was fetched successfully
-        if (data) {
-            const ticketsArray = data['results'];
-            if (ticketsArray.length > 0) {
-                for (let i = 0; i < ticketsArray.length; i++) {
-                    const ticket = ticketsArray[i];
-                    const par_dict = {
-                        'requester_id': ticket['requester_id'],
-                        'submitter_id': ticket['submitter_id'],
-                        'assignee_id': ticket['assignee_id'],
-                        'organization_id': ticket['organization_id'],
-                        'group_id': ticket['group_id'],
-                        'ticket_form_id': ticket['ticket_form_id'],
-                        'brand_id': ticket['brand_id'],
-                        'custom_status_id': ticket['custom_status_id'],
-                        'id': ticket["id"]
-                    };
-
-                    const ApiData = await fetchRequesterData(par_dict);
-                    const updatedTicket = {
-                        ...ticket,
-                        ...ApiData
-                    };
-                    Updated_tickets_Array.push(updatedTicket);
-                }
-            } else {
-                // Perform actions when ticketsArray is empty
+                Updated_tickets_Array.push(ticket);
             }
         } else {
-            // Handle timeout scenario
         }
     } catch (error) {
     }
     return Updated_tickets_Array;
 }
-
 
 function fetchRequesterData(par_dict) {
     return new Promise(async (resolve, reject) => {
