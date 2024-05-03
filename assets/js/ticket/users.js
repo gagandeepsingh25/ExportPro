@@ -22,7 +22,7 @@ async function searchUsersData(query) {
 
     var user_data = {};
 
-    const url = `${zendesk_domain}/api/v2/search.json?query=type:user ${query}&sort_by=created_at&sort_order=asc`;
+    const url = `https://${subdomain}.zendesk.com/api/v2/search/export.json?query=${encodeURIComponent(query)}&page[size]=1000&filter[type]=user`;
 
     try {
         const response = await client.request(url, {
